@@ -18,5 +18,5 @@ Ratatata
 
 ### Todo 
 
-* Evict auto '' when wditing .m files.
+* Avoid auto '' when wditing .m files.
 * Add auto ** when editing .md files.
