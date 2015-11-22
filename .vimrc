@@ -11,7 +11,7 @@
 "   -> General
 "   -> VIM user interface
 "   -> Colors and Fonts
-"   -> Files and backups
+"   -> Files, backups and undo
 "   -> Text, tab and indent related
 "   -> Visual mode related
 "   -> Moving around, tabs and buffers
@@ -52,6 +52,8 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'tpope/vim-fugitive'
 " NERD Tree
 Plugin 'scrooloose/nerdtree'
+" NERD Comenter
+Plugin 'scrooloose/nerdcommenter'
 " Auto-save
 Plugin 'vim-scripts/vim-auto-save'
 " Tabular
@@ -84,6 +86,14 @@ let g:mapleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
+
+" Tell vim to remember certain things when we exit
+"  '10  :  marks will be remembered for up to 10 previously edited files
+"  "100 :  will save up to 100 lines for each register
+"  :20  :  up to 20 lines of command-line history will be remembered
+"  %    :  saves and restores the buffer list
+"  n... :  where to save the viminfo files
+set viminfo='10,\"100,:20,%,n~/.viminfo
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -132,6 +142,8 @@ set showmatch
 " Set line number
 set number
 
+" Better contrast
+set background=dark
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -140,10 +152,19 @@ set number
 syntax enable
 
 colorscheme codeschool
-set guifont=Inconsolata\ 16 
+set guifont=Inconsolata\ 14 
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+set nobackup
+set nowb
+set noswapfile
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -159,9 +180,9 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
-" Linebreak on 500 characters
+" Linebreak on 80 characters
 set lbr
-set tw=500
+set tw=80
 
 set ai "Auto indent
 set si "Smart indent
@@ -214,8 +235,7 @@ set splitright
 set laststatus=2
 
 " Format the status line
-set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l-%c
-" %m - modified flag removed because of Autosave (a little bit annoying)
+set statusline=\ %t%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l-%c
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -236,9 +256,12 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 " => Plugins configurations
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " -- NERDTree configs
+" Ignore compiled files
+let NERDTreeIgnore = ['\.pyc$']
 map <F2> :NERDTreeToggle<CR>
 " CDC = Change to Directory of Current file
 command CDC cd %:p:h
+
 " -- Vim auto-save configs
 " Only enable Autosave on home folders
 if expand('%:p:h') =~ "/home/" . expand("$USER")
@@ -246,7 +269,7 @@ if expand('%:p:h') =~ "/home/" . expand("$USER")
 else
     let g:auto_save = 0
 end
-"let g:auto_save_no_updatetime = 1  " do not change the 'updatetime' option
+let g:auto_save_no_updatetime = 1  " do not change the 'updatetime' option
 "let g:auto_save_in_insert_mode = 0  " do not save while in insert mode
 
 
@@ -279,3 +302,15 @@ function! VisualSelection(direction) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
