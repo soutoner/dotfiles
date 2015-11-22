@@ -1,19 +1,10 @@
 vim-my-way
-============
+==========
 
 Personal configuration files and vagrant environments.
 
-## Table of Contents
-
-  * [vim-my-way](#vim-my-way)
-    * [Vagrant environments](#vagrant-environments)
-      * [Ruby on Rails](#ruby-on-rails)
-    * [.vimrc](#vimrc)
-      * [Install](#install)
-
-Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
-
-## Vagrant environments
+Vagrant environments
+--------------------
 
 ### Ruby on Rails
 
@@ -37,7 +28,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ######################################################
 ```
 
-## .vimrc
+.vimrc
+------
 
 Feel free to copy it.
 
