@@ -1,6 +1,17 @@
-# vim-my-way
+vim-my-way
+============
 
 Personal configuration files and vagrant environments.
+
+## Table of Contents
+
+  * [vim-my-way](#vim-my-way)
+    * [Vagrant environments](#vagrant-environments)
+      * [Ruby on Rails](#ruby-on-rails)
+    * [.vimrc](#vimrc)
+      * [Install](#install)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Vagrant environments
 
@@ -38,8 +49,3 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
 Ratatata
-
-### Todo 
-
-* Avoid auto '' when wditing .m files.
-* Add auto ** when editing .md files.
