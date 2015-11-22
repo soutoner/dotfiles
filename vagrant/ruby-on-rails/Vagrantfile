@@ -40,5 +40,5 @@ Vagrant.configure(2) do |config|
   end
   
   # Enable provisioning with a shell script. Install dev stack.
-  #config.vm.provision :shell, privileged: false, path: "bootstrap.sh"
+  config.vm.provision :shell, privileged: false, path: "bootstrap.sh"
 end
