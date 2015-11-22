@@ -1,12 +1,13 @@
 # vim-my-way
 
-Personal configuration files.
+Personal configuration files and vagrant environments.
 
 ## Vagrant environments
 
 ### Ruby on Rails
 
-> ######################################################
+```
+######################################################
 # Ruby On Rails stack:
 #   OS:
 #     · Ubuntu Server 14.04 LTS (Trusty Tahr) 64 bits
@@ -23,6 +24,7 @@ Personal configuration files.
 #   Database:
 #     · MySQL
 ######################################################
+```
 
 ## .vimrc
 
@@ -30,11 +32,10 @@ Feel free to copy it.
 
 ### Install
 
-`git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim`
-
-`vim` or `gvim`
-
-`:PluginInstall`
+```
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+:PluginInstall
+```
 
 Ratatata
 
