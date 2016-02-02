@@ -11,7 +11,7 @@ Personal configuration files and vagrant environments.
 - [Vagrant environments](#)
 	- [Ruby on Rails](#)
 - [.vimrc](#)
-		- [Installation](#)
+	- [Installation](#)
 
 
 Linux Bootstrapping
