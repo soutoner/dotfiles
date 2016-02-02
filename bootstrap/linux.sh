@@ -64,6 +64,7 @@ function parse_yaml {
 
 # Read configuration file. Third argument is a prefix for all the variables.
 eval $(parse_yaml conf.yml)
+
 # """"""""""""""""""""""""""""""""""
 # Minimum libraries
 # """"""""""""""""""""""""""""""""""
@@ -174,8 +175,8 @@ fi
 ## MySQL Server
 #   Credentials:
 #       - User: root
-#       - Password: root
-#   If you want a different password, change next two lines.
+#       - Password: inside config.yml
+#   If you want a different password, change the config.yml
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $db_mysql_password"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $db_mysql_password"
 sudo apt-get -y install mysql-server php5-mysql
