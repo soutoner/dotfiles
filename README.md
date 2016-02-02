@@ -3,6 +3,16 @@ vim-my-way
 
 Personal configuration files and vagrant environments.
 
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [Linux Bootstrapping](#)
+	- [Contents](#)
+	- [Usage](#)
+- [Vagrant environments](#)
+	- [Ruby on Rails](#)
+- [.vimrc](#)
+		- [Installation](#)
+
 
 Linux Bootstrapping
 -------------------
