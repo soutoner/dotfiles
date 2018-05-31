@@ -38,8 +38,8 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 
-" Vim Colorschemes
-Plugin 'flazz/vim-colorschemes'
+" Vim Colorscheme
+Plugin 'ayu-theme/ayu-vim'
 " Vim fugitive (git integration)
 Plugin 'tpope/vim-fugitive'
 " Vim git gutter (git integration)
@@ -141,12 +141,13 @@ set background=dark
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set t_Co=256
 " Enable syntax highlighting
 syntax enable
 
-colorscheme codeschool
-set guifont=Inconsolata\ 14 
+set termguicolors     " enable true colors support
+let ayucolor="dark"   " for dark version of theme
+colorscheme ayu
+set guifont=Inconsolata\ 13
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
