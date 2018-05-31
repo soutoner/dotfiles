@@ -33,41 +33,30 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
 
 " Vim Colorschemes
 Plugin 'flazz/vim-colorschemes'
 " Vim fugitive (git integration)
 Plugin 'tpope/vim-fugitive'
+" Vim git gutter (git integration)
+Plugin 'airblade/vim-gitgutter'
 " NERD Tree
 Plugin 'scrooloose/nerdtree'
 " NERD Comenter
 Plugin 'scrooloose/nerdcommenter'
 " Auto-save
 Plugin 'vim-scripts/vim-auto-save'
-" Tabular
-Plugin 'godlygeek/tabular'
-" Autoclose
-Plugin 'jiangmiao/auto-pairs'
 " Vim-surround
 Plugin 'tpope/vim-surround'
+" Vim-scala integration
+Plugin 'derekwyatt/vim-scala'
 
-" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -181,10 +170,6 @@ set smarttab
 set shiftwidth=2
 set tabstop=2
 
-" Linebreak on 80 characters
-"set lbr
-"set tw=80
-
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
@@ -236,7 +221,7 @@ set splitright
 set laststatus=2
 
 " Format the status line
-set statusline=\ %t%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l-%c
+set statusline=\ %t%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ %{fugitive#statusline()}\ \ Line:\ %l-%c
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -271,7 +256,7 @@ else
     let g:auto_save = 0
 end
 let g:auto_save_no_updatetime = 1  " do not change the 'updatetime' option
-"let g:auto_save_in_insert_mode = 0  " do not save while in insert mode
+let g:auto_save_in_insert_mode = 0  " do not save while in insert mode
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
