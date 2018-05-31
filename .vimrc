@@ -39,7 +39,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Vim Colorscheme
-Plugin 'ayu-theme/ayu-vim'
+Plugin 'jacoborus/tender.vim'
 " Vim fugitive (git integration)
 Plugin 'tpope/vim-fugitive'
 " Vim git gutter (git integration)
@@ -144,9 +144,7 @@ set background=dark
 " Enable syntax highlighting
 syntax enable
 
-set termguicolors     " enable true colors support
-let ayucolor="dark"   " for dark version of theme
-colorscheme ayu
+colorscheme tender
 set guifont=Inconsolata\ 13
 
 " Set utf8 as standard encoding and en_US as the standard language
