@@ -54,6 +54,10 @@ Plugin 'vim-scripts/vim-auto-save'
 Plugin 'tpope/vim-surround'
 " Vim-scala integration
 Plugin 'derekwyatt/vim-scala'
+" CtrlP fuzzy file finder
+Plugin 'ctrlpvim/ctrlp.vim'
+" Improved status line
+Plugin 'vim-airline/vim-airline'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
