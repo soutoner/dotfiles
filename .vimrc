@@ -96,7 +96,7 @@ set viminfo='10,\"100,:20,%,n~/.viminfo
 set wildmenu
 
 " Ignore compiled files
-set wildignore=*.o,*~,*.pyc,*.class
+set wildignore=*.o,*~,*.class
 
 "Always show current position
 set ruler
@@ -130,7 +130,7 @@ set lazyredraw
 set magic
 
 " Show matching brackets when text indicator is over them
-set showmatch
+"set showmatch
 
 " Set line number
 set number
@@ -172,6 +172,9 @@ set smarttab
 " 1 tab == 2 spaces
 set shiftwidth=2
 set tabstop=2
+
+" Different indent setting for java
+autocmd Filetype java setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
 set ai "Auto indent
 set si "Smart indent
@@ -229,16 +232,14 @@ set statusline=\ %t%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ %{fugitive#statuslin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remap VIM 0 to first non-blank character
-map 0 ^
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+" Delete trailing white space on save
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.scala :call DeleteTrailingWS()
+autocmd BufWrite *.java :call DeleteTrailingWS()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -246,7 +247,7 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " -- NERDTree configs
 " Ignore compiled files
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.class$']
 map <F2> :NERDTreeToggle<CR>
 " CDC = Change to Directory of Current file
 command CDC cd %:p:h
