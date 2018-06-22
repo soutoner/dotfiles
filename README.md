@@ -5,14 +5,40 @@ Personal configuration files and vagrant environments.
 
 **Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
+- [.vimrc](#)
+	- [Installation](#)
+- [Git Aliases](#)
+	- [Installation](#)
 - [Linux Bootstrapping](#)
 	- [Contents](#)
 	- [Usage](#)
-- [Vagrant environments](#)
-	- [Ruby on Rails](#)
-- [.vimrc](#)
-	- [Installation](#)
 
+.vimrc
+------
+
+Feel free to copy it.
+
+#### Installation
+
+```
+$ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+$ vim +PluginInstall +qall
+```
+
+Ratatata
+
+Git Aliases
+------
+
+#### Installation
+
+```
+$ vim ~/.gitconfig
+
+# .gitconfig
+[include]
+  path = vim-my-way/gitalias.txt
+```
 
 Linux Bootstrapping
 -------------------
@@ -68,42 +94,3 @@ cd ~/vim-my-way/bootstrap
 chmod +x linux.sh
 ./linux.sh
 ```
-
-Vagrant environments
---------------------
-
-### Ruby on Rails
-
-```
-######################################################
-# Ruby On Rails stack:
-#   OS:
-#     · Ubuntu Server 14.04 LTS (Trusty Tahr) 64 bits
-#   Tools:
-#     · Git
-#     · Rbenv
-#   Languages:
-#     · Ruby 2.2.3
-#     · Python 2.7.6 
-#     · NodeJS
-#   Gems:
-#     · Bundler
-#     · Rails
-#   Database:
-#     · MySQL
-######################################################
-```
-
-.vimrc
-------
-
-Feel free to copy it.
-
-#### Installation
-
-```
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim -c ':PluginInstall' -c 'qa!' # Quit vim
-```
-
-Ratatata

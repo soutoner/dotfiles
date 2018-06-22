@@ -1,0 +1,22 @@
+[alias]
+  ### Frequent commands ###
+  a = add
+  b = branch
+  c = commit
+  d = diff
+  f = fetch
+  l = log
+  m = merge
+  co = checkout
+  p = pull
+  s = status
+  
+  ### Verbose ###
+  unstage = reset HEAD --
+
+  ### diff ###
+  dc = diff --cached
+
+  ### Alias management ###
+  # Show our defined alias list
+  aliases = "!git config --get-regexp '^alias\\.' | cut -c 7- | sed 's/ / = /'"
