@@ -9,6 +9,9 @@ Personal configuration files and vagrant environments.
 	- [Installation](#)
 - [Git Aliases](#)
 	- [Installation](#)
+- [Tmux Conf](#)
+	- [Requirements](#)
+	- [Installation](#)
 - [Linux Bootstrapping](#)
 	- [Contents](#)
 	- [Usage](#)
@@ -33,11 +36,34 @@ Git Aliases
 #### Installation
 
 ```
+$ ln -s vim-my-way/gitalias.txt ~
 $ vim ~/.gitconfig
 
 # .gitconfig
 [include]
-  path = vim-my-way/gitalias.txt
+  path = gitalias.txt
+```
+
+Tmux Conf
+------
+
+#### Requirements
+
+- Linux: None
+- MacOS: `brew install reattach-to-user-namespace`
+
+#### Installation
+
+```
+$ ln -s vim-my-way/tmux/.tmux-common.conf ~
+```
+
+- Linux: `$ ln -s vim-my-way/tmux/.tmux.conf ~`
+- MacOS: 
+
+```
+$ ln -s vim-my-way/tmux/.tmux-macos.conf ~
+$ echo "source '.tmux-macos.conf'" > .tmux.conf
 ```
 
 Linux Bootstrapping
