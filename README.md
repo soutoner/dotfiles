@@ -37,11 +37,7 @@ Git Aliases
 
 ```
 $ ln -s vim-my-way/gitalias.txt ~
-$ vim ~/.gitconfig
-
-# .gitconfig
-[include]
-  path = gitalias.txt
+$ ln -s vim-my-way/.gitconfig
 ```
 
 Tmux Conf
@@ -49,7 +45,7 @@ Tmux Conf
 
 #### Requirements
 
-- Linux: None
+- Linux: `sudo apt install xclip`
 - MacOS: `brew install reattach-to-user-namespace`
 
 #### Installation
