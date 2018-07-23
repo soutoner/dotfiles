@@ -3,18 +3,18 @@ vim-my-way
 
 Personal configuration files and vagrant environments.
 
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+**Table of Contents**
 
-- [.vimrc](#)
-	- [Installation](#)
-- [Git Aliases](#)
-	- [Installation](#)
-- [Tmux Conf](#)
-	- [Requirements](#)
-	- [Installation](#)
-- [Linux Bootstrapping](#)
-	- [Contents](#)
-	- [Usage](#)
+- [.vimrc](#vimrc)
+	- [Installation](#installation)
+- [Git Aliases](#git-aliases)
+	- [Installation](#installation-1)
+- [Tmux Conf](#tmux-conf)
+	- [Requirements](#requirements)
+	- [Installation](#installation-2)
+- [Linux Bootstrapping](#linux-bootstrapping)
+	- [Contents](#contents)
+	- [Usage](#usage)
 
 .vimrc
 ------
@@ -37,7 +37,7 @@ Git Aliases
 
 ```
 $ ln -s vim-my-way/gitalias.txt ~
-$ ln -s vim-my-way/.gitconfig
+$ ln -s vim-my-way/.gitconfig ~
 ```
 
 Tmux Conf
