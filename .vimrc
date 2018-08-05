@@ -3,11 +3,8 @@
 "   Adrian Gonzalez
 "   gitub.com/soutoner - adrigonle@gmail.com
 "
-" Version: 
-"   1.0 - 6/1/15
-"
 " Sections:
-"   -> Vundle
+"   -> Vim-plug
 "   -> General
 "   -> VIM user interface
 "   -> Colors and Fonts
@@ -28,40 +25,39 @@
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vundle
+" => Vim-plug
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.local/share/nvim/plugged')
 
 " Vim Colorscheme
-Plugin 'jacoborus/tender.vim'
+Plug 'jacoborus/tender.vim'
 " Vim fugitive (git integration)
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 " Vim git gutter (git integration)
-Plugin 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 " NERD Tree
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 " NERD Comenter
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 " Auto-save
-Plugin 'vim-scripts/vim-auto-save'
+Plug 'vim-scripts/vim-auto-save'
 " Vim-surround
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 " Vim-scala integration
-Plugin 'derekwyatt/vim-scala'
+Plug 'derekwyatt/vim-scala'
 " CtrlP fuzzy file finder
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " Improved status line
-Plugin 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
+" LanguageClient neovim
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+Plug 'junegunn/fzf'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-call vundle#end()            " required
-filetype plugin indent on    " required
-
+call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -266,6 +262,17 @@ let g:auto_save_in_insert_mode = 0  " do not save while in insert mode
 " Revert or stage individuals hunks. Mnemonics: hunk add, hunk undo
 nmap <Leader>ha <Plug>GitGutterStageHunk
 nmap <Leader>hu <Plug>GitGutterRevertHunk
+
+" -- LanguageClient configs
+" This requires https://github.com/haskell/haskell-ide-engine
+let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper'] }
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F6> :call LanguageClient#textDocument_rename()<CR>
+
+" -- Deoplete configs
+let g:deoplete#enable_at_startup = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions

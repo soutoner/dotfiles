@@ -23,12 +23,37 @@ Feel free to copy it.
 
 #### Installation
 
+First, let's install [vim-plug](https://github.com/junegunn/vim-plug)
+
+* Vim:
+
 ```
-$ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-$ vim +PluginInstall +qall
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
-Ratatata
+* NeoVim:
+
+```
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```
+
+Additionaly we have to link our `.vimrc` to NeoVim (for further infor check [:help nvim-from-vim](https://neovim.io/doc/user/nvim.html#nvim-from-vim))
+
+```
+# ~/.config/nvim/init.vim
+
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
+source ~/.vimrc
+```
+
+Common step:
+
+```
+$ vim +PlugInstall +qall
+```
 
 Git Aliases
 ------
