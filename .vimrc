@@ -265,7 +265,7 @@ nmap <Leader>hu <Plug>GitGutterRevertHunk
 
 " -- LanguageClient configs
 " This requires https://github.com/haskell/haskell-ide-engine
-let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper'] }
+"let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper'] }
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
