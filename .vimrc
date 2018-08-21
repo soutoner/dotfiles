@@ -13,7 +13,6 @@
 "   -> Visual mode related
 "   -> Moving around, tabs and buffers
 "   -> Status line
-"   -> Editing mappings
 "   -> Misc
 "   -> Plugin configurations
 "   -> Helper functions
@@ -49,13 +48,8 @@ Plug 'derekwyatt/vim-scala'
 Plug 'ctrlpvim/ctrlp.vim'
 " Improved status line
 Plug 'vim-airline/vim-airline'
-" LanguageClient neovim
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-Plug 'junegunn/fzf'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Highlight and fix trailing whitespaces
+Plug 'bronson/vim-trailing-whitespace'
 
 call plug#end()
 
@@ -226,19 +220,6 @@ set laststatus=2
 set statusline=\ %t%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ %{fugitive#statusline()}\ \ Line:\ %l-%c
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Delete trailing white space on save
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.scala :call DeleteTrailingWS()
-autocmd BufWrite *.java :call DeleteTrailingWS()
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins configurations
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " -- NERDTree configs
@@ -250,7 +231,7 @@ command CDC cd %:p:h
 
 " -- Vim auto-save configs
 " Only enable Autosave on home folders
-if expand('%:p:h') =~ "/home/" . expand("$USER")
+if expand('%:p:h') =~ "/home/" . expand("$USER") || expand('%:p:h') =~ "/Users/" . expand("$USER")
     let g:auto_save = 1
 else
     let g:auto_save = 0
@@ -260,19 +241,10 @@ let g:auto_save_in_insert_mode = 0  " do not save while in insert mode
 
 " -- GitGutter configs
 " Revert or stage individuals hunks. Mnemonics: hunk add, hunk undo
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
 nmap <Leader>ha <Plug>GitGutterStageHunk
-nmap <Leader>hu <Plug>GitGutterRevertHunk
-
-" -- LanguageClient configs
-" This requires https://github.com/haskell/haskell-ide-engine
-"let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper'] }
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F6> :call LanguageClient#textDocument_rename()<CR>
-
-" -- Deoplete configs
-let g:deoplete#enable_at_startup = 1
+nmap <Leader>hu <Plug>GitGutterUndoHunk
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
