@@ -1,5 +1,5 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer: 
+" Maintainer:
 "   Adrian Gonzalez
 "   gitub.com/soutoner - adrigonle@gmail.com
 "
@@ -104,7 +104,7 @@ set whichwrap+=<,>,h,l
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Highlight search results
@@ -170,6 +170,8 @@ set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 
+" Force vim not to add a final newline to files
+set nofixendofline
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
@@ -201,7 +203,7 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew 
+map <leader>tn :tabnew
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
