@@ -38,8 +38,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 " NERD Comenter
 Plug 'scrooloose/nerdcommenter'
-" Auto-save
-Plug 'vim-scripts/vim-auto-save'
 " Vim-surround
 Plug 'tpope/vim-surround'
 " Vim-scala integration
@@ -230,16 +228,6 @@ let NERDTreeIgnore = ['\.class$']
 map <F2> :NERDTreeToggle<CR>
 " CDC = Change to Directory of Current file
 command CDC cd %:p:h
-
-" -- Vim auto-save configs
-" Only enable Autosave on home folders
-if expand('%:p:h') =~ "/home/" . expand("$USER") || expand('%:p:h') =~ "/Users/" . expand("$USER")
-    let g:auto_save = 1
-else
-    let g:auto_save = 0
-end
-let g:auto_save_no_updatetime = 1  " do not change the 'updatetime' option
-let g:auto_save_in_insert_mode = 0  " do not save while in insert mode
 
 " -- GitGutter configs
 " Revert or stage individuals hunks. Mnemonics: hunk add, hunk undo
