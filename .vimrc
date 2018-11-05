@@ -76,6 +76,8 @@ nmap <leader>w :w!<cr>
 "  n... :  where to save the viminfo files
 set viminfo='10,\"100,:20,%,n~/.viminfo
 
+" Shorter updatetime for a smoother GitGutter integration
+set updatetime=100
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -138,7 +140,6 @@ set guifont=Inconsolata\ 13
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -146,7 +147,6 @@ set encoding=utf8
 set nobackup
 set nowb
 set noswapfile
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
