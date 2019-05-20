@@ -42,12 +42,15 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 " Vim-scala integration
 Plug 'derekwyatt/vim-scala'
-" CtrlP fuzzy file finder
-Plug 'ctrlpvim/ctrlp.vim'
+" fzf
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 " Improved status line
 Plug 'vim-airline/vim-airline'
 " Highlight and fix trailing whitespaces
 Plug 'bronson/vim-trailing-whitespace'
+" Smart pane switching Vim <-> tmux
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
@@ -189,7 +192,7 @@ map k gk
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
-map <c-space> ?
+map <leader><space> ?
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
@@ -235,6 +238,9 @@ nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
 nmap <Leader>ha <Plug>GitGutterStageHunk
 nmap <Leader>hu <Plug>GitGutterUndoHunk
+
+" -- FZF configs
+nnoremap <C-p> :FZF<Cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
