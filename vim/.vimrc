@@ -47,6 +47,12 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
 " Highlight and fix trailing whitespaces
 Plug 'bronson/vim-trailing-whitespace'
+" Typescript + React development
+Plug 'pangloss/vim-javascript' " Javascript syntax
+Plug 'leafgarland/typescript-vim' " Typescript syntax
+Plug 'peitalin/vim-jsx-typescript' " .tsx files syntax
+" Coc
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
@@ -234,6 +240,27 @@ nmap <Leader>hu <Plug>GitGutterUndoHunk
 
 " -- FZF configs
 nnoremap <C-p> :FZF<Cr>
+
+" -- React + Typescript development
+" Out of sync syntax highliting fix (performance cost)
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+
+" -- Coc
+" Extensions
+let g:coc_global_extensions = [
+  \ 'coc-tsserver'
+  \ ]
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+  let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+endif
+
+nnoremap <silent> K :call CocAction('doHover')<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
