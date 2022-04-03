@@ -1,7 +1,7 @@
 vim-my-way
 ==========
 
-Personal configuration files and vagrant environments.
+Personal configuration files.
 
 **Table of Contents**
 
@@ -21,6 +21,10 @@ Personal configuration files and vagrant environments.
 
 Feel free to copy it.
 
+```
+$ ln -s ~/vim-my-way/vim/.vimrc ~/.vimrc
+```
+
 #### Installation
 
 First, let's install [vim-plug](https://github.com/junegunn/vim-plug)
@@ -35,24 +39,21 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 * NeoVim:
 
 ```
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 ```
 
 Additionaly we have to link our `.vimrc` to NeoVim (for further infor check [:help nvim-from-vim](https://neovim.io/doc/user/nvim.html#nvim-from-vim))
 
 ```
-# ~/.config/nvim/init.vim
-
-set runtimepath^=~/.vim runtimepath+=~/.vim/after
-let &packpath = &runtimepath
-source ~/.vimrc
+$ mkdir -p ~/.config/nvim/
+$ ln -s ~/vim-my-way/nvim/init.vim ~/.config/nvim/init.vim
 ```
 
 Common step:
 
 ```
-$ vim +PlugInstall +qall
+$ [n]vim +PlugInstall +qall
 ```
 
 Git Aliases

@@ -26,7 +26,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vim-plug
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 
 " Vim Colorscheme
 Plug 'jacoborus/tender.vim'
@@ -40,17 +40,13 @@ Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 " Vim-surround
 Plug 'tpope/vim-surround'
-" Vim-scala integration
-Plug 'derekwyatt/vim-scala'
 " fzf
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " Improved status line
 Plug 'vim-airline/vim-airline'
 " Highlight and fix trailing whitespaces
 Plug 'bronson/vim-trailing-whitespace'
-" Smart pane switching Vim <-> tmux
-Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
@@ -77,7 +73,7 @@ nmap <leader>w :w!<cr>
 "  :20  :  up to 20 lines of command-line history will be remembered
 "  %    :  saves and restores the buffer list
 "  n... :  where to save the viminfo files
-set viminfo='10,\"100,:20,%,n~/.viminfo
+"set viminfo='10,\"100,:20,%,n~/.viminfo
 
 " Shorter updatetime for a smoother GitGutter integration
 set updatetime=100
@@ -123,7 +119,7 @@ set lazyredraw
 set magic
 
 " Show matching brackets when text indicator is over them
-"set showmatch
+set showmatch
 
 " Set line number
 set number
@@ -163,9 +159,6 @@ set smarttab
 " 1 tab == 2 spaces
 set shiftwidth=2
 set tabstop=2
-
-" Different indent setting for java
-autocmd Filetype java setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
 set ai "Auto indent
 set si "Smart indent
