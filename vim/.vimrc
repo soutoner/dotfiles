@@ -51,6 +51,8 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'pangloss/vim-javascript' " Javascript syntax
 Plug 'leafgarland/typescript-vim' " Typescript syntax
 Plug 'peitalin/vim-jsx-typescript' " .tsx files syntax
+" Seamless navigation tmux - vim
+Plug 'christoomey/vim-tmux-navigator'
 " Coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -140,7 +142,7 @@ set background=dark
 syntax enable
 
 colorscheme tender
-set guifont=Inconsolata\ 13
+set guifont=Fira\ Code\ 13
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -181,7 +183,6 @@ set nofixendofline
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -197,10 +198,10 @@ map <leader><space> ?
 map <silent> <leader><cr> :noh<cr>
 
 " Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+"map <C-j> <C-W>j
+"map <C-k> <C-W>k
+"map <C-h> <C-W>h
+"map <C-l> <C-W>l
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew
@@ -210,7 +211,6 @@ map <leader>tm :tabmove
 
 " Set vertical split to the right
 set splitright
-
 
 """"""""""""""""""""""""""""""
 " => Status line
@@ -226,10 +226,13 @@ set statusline=\ %t%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ %{fugitive#statuslin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " -- NERDTree configs
 " Ignore compiled files
-let NERDTreeIgnore = ['\.class$']
-map <F2> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.class$', '.DS_Store', '.git']
+" NERDTree mappings
+nnoremap <C-t> :NERDTreeToggle<CR>
 " CDC = Change to Directory of Current file
 command CDC cd %:p:h
+" Always show hidden files
+let NERDTreeShowHidden=1
 
 " -- GitGutter configs
 " Revert or stage individuals hunks. Mnemonics: hunk add, hunk undo
