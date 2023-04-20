@@ -5,10 +5,10 @@ Personal configuration files.
 
 **Table of Contents**
 
-- [.vimrc](#vimrc)
-	- [Installation](#installation)
+- [NeoVim](#neovim)
 - [Git Aliases](#git-aliases)
 	- [Installation](#installation-1)
+- [Shell aliases](#shell-aliases)
 - [Tmux Conf](#tmux-conf)
 	- [Requirements](#requirements)
 	- [Installation](#installation-2)
@@ -16,45 +16,12 @@ Personal configuration files.
 	- [Contents](#contents)
 	- [Usage](#usage)
 
-.vimrc
+NeoVim
 ------
 
-Feel free to copy it.
+See [init.nvim repo](https://github.com/soutoner/init.nvim)
 
-```
-$ ln -s ~/vim-my-way/vim/.vimrc ~/.vimrc
-```
-
-#### Installation
-
-First, let's install [vim-plug](https://github.com/junegunn/vim-plug)
-
-* Vim:
-
-```
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-```
-
-* NeoVim:
-
-```
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-```
-
-Additionaly we have to link our `.vimrc` to NeoVim (for further infor check [:help nvim-from-vim](https://neovim.io/doc/user/nvim.html#nvim-from-vim))
-
-```
-$ mkdir -p ~/.config/nvim/
-$ ln -s ~/vim-my-way/nvim/init.vim ~/.config/nvim/init.vim
-```
-
-Common step:
-
-```
-$ [n]vim +PlugInstall +qall
-```
+For easier usage (vim vs nvim command) see [Shell aliases](#shell-aliases) section.
 
 Git Aliases
 ------
@@ -66,27 +33,26 @@ $ ln -s vim-my-way/gitalias.txt ~
 $ ln -s vim-my-way/.gitconfig ~
 ```
 
+Shell aliases
+------
+
+This step might vary dending or which shell are you using (Zsh, Bash, etc). E.g. for Zsh
+
+```
+$ ln -s vim-my-way/shell/.aliases ~
+$ cat << EOF >> ~/.zshrc
+if [ -f ~/.aliases ]; then
+  . ~/.aliases
+fi
+EOF
+```
+
 Tmux Conf
 ------
 
-#### Requirements
-
-- Linux: `sudo apt install xclip`
-- MacOS: `brew install reattach-to-user-namespace`
-
 #### Installation
 
-```
-$ ln -s vim-my-way/tmux/.tmux-common.conf ~
-```
-
-- Linux: `$ ln -s vim-my-way/tmux/.tmux.conf ~`
-- MacOS: 
-
-```
-$ ln -s vim-my-way/tmux/.tmux-macos.conf ~
-$ echo "source '.tmux-macos.conf'" > .tmux.conf
-```
+`$ ln -s vim-my-way/tmux/.tmux.conf ~`
 
 Linux Bootstrapping
 -------------------
