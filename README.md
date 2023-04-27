@@ -28,6 +28,7 @@ Personal configuration files.
 
 ### Utilities
 
+- [nvim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 - [fzf](https://github.com/junegunn/fzf#installation)
 - [bat](https://github.com/sharkdp/bat#installation)
 - [jq](https://github.com/stedolan/jq)
@@ -64,8 +65,8 @@ For easier usage (vim vs nvim command) see [Shell aliases](#shell-aliases) secti
 ## Git Aliases
 
 ```
-$ ln -s vim-my-way/gitalias.txt ~
-$ cp vim-my-way/.gitconfig ~/.gitconfig
+$ ln -s ~/vim-my-way/git/gitalias.txt ~
+$ cp ~/vim-my-way/git/.gitconfig ~/.gitconfig
 ```
 
 ## Linux Bootstrapping
