@@ -1,10 +1,13 @@
-vim-my-way
-==========
+# vim-my-way
 
 Personal configuration files.
 
 **Table of Contents**
 
+- [Shell Conf](#shell-conf)
+	- [Recommendations](#recommendations)
+	- [Utilities](#utilities)
+	- [Aliases](#aliases)
 - [Tmux Conf](#tmux-conf)
 - [NeoVim](#neovim)
 - [Git Aliases](#git-aliases)
@@ -13,9 +16,31 @@ Personal configuration files.
 	- [Contents](#contents)
 	- [Usage](#usage)
 
+## Shell Conf
 
-Tmux Conf
-------
+### Recommendations:
+
+- (If not already installed) [Zsh](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH)
+- [Oh My Zsh](https://ohmyz.sh/#install)
+- [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md#oh-my-zsh)
+- [Nerd fonts](https://www.nerdfonts.com/font-downloads)
+- [Powerlevel10k](https://github.com/romkatv/powerlevel10k#oh-my-zsh) 
+
+### Utilities
+
+- [fzf](https://github.com/junegunn/fzf#installation)
+- [bat](https://github.com/sharkdp/bat#installation)
+- [jq](https://github.com/stedolan/jq)
+
+### Aliases
+
+In case of Oh My Zsh:
+
+```
+$ ln -s ~/vim-my-way/shell/aliases.zsh $ZSH_CUSTOM
+```
+
+## Tmux Conf
 
 1. Get latest [tmux](https://github.com/tmux/tmux/wiki/Installing)
 2. Get latest [TPM](https://github.com/tmux-plugins/tpm#installation) 
@@ -30,37 +55,20 @@ Note: if you are using iTerm2 and you want to use opt character as Meta, please 
 
 ![opt-as-meta-iterm2](images/opt-as-meta-iterm2.png)
 
-NeoVim
-------
+## NeoVim
 
 See [init.nvim repo](https://github.com/soutoner/init.nvim)
 
 For easier usage (vim vs nvim command) see [Shell aliases](#shell-aliases) section.
 
-Git Aliases
-------
+## Git Aliases
 
 ```
 $ ln -s vim-my-way/gitalias.txt ~
 $ cp vim-my-way/.gitconfig ~/.gitconfig
 ```
 
-Shell aliases
-------
-
-This step might vary dending or which shell are you using (Zsh, Bash, etc). E.g. for Zsh
-
-```
-$ ln -s vim-my-way/shell/.aliases ~
-$ cat << EOF >> ~/.zshrc
-if [ -f ~/.aliases ]; then
-  . ~/.aliases
-fi
-EOF
-```
-
-Linux Bootstrapping
--------------------
+## Linux Bootstrapping
 
 Script with configuration file that will bootstrap your brand new linux! Please, I encourage you to read the configuration file before using the script.
 
