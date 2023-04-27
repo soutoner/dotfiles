@@ -5,16 +5,30 @@ Personal configuration files.
 
 **Table of Contents**
 
+- [Tmux Conf](#tmux-conf)
 - [NeoVim](#neovim)
 - [Git Aliases](#git-aliases)
-	- [Installation](#installation-1)
 - [Shell aliases](#shell-aliases)
-- [Tmux Conf](#tmux-conf)
-	- [Requirements](#requirements)
-	- [Installation](#installation-2)
 - [Linux Bootstrapping](#linux-bootstrapping)
 	- [Contents](#contents)
 	- [Usage](#usage)
+
+
+Tmux Conf
+------
+
+1. Get latest [tmux](https://github.com/tmux/tmux/wiki/Installing)
+2. Get latest [TPM](https://github.com/tmux-plugins/tpm#installation) 
+3. 
+
+```
+$ mkdir ~/.config/tmux	# If it does not exist yet
+$ ln -s ~/vim-my-way/tmux/tmux.conf ~/.config/tmux/tmux.conf
+```
+
+Note: if you are using iTerm2 and you want to use opt character as Meta, please do the following:
+
+![opt-as-meta-iterm2](images/opt-as-meta-iterm2.png)
 
 NeoVim
 ------
@@ -26,11 +40,9 @@ For easier usage (vim vs nvim command) see [Shell aliases](#shell-aliases) secti
 Git Aliases
 ------
 
-#### Installation
-
 ```
 $ ln -s vim-my-way/gitalias.txt ~
-$ ln -s vim-my-way/.gitconfig ~
+$ cp vim-my-way/.gitconfig ~/.gitconfig
 ```
 
 Shell aliases
@@ -46,13 +58,6 @@ if [ -f ~/.aliases ]; then
 fi
 EOF
 ```
-
-Tmux Conf
-------
-
-#### Installation
-
-`$ ln -s vim-my-way/tmux/.tmux.conf ~`
 
 Linux Bootstrapping
 -------------------

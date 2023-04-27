@@ -1,2 +1,4 @@
 [include]
-  path = gitalias.txt
+	path = gitalias.txt
+[user]
+	name = Adrian Gonzalez
