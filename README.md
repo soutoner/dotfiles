@@ -28,7 +28,6 @@ Personal configuration files.
 
 ### Utilities
 
-- [nvim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 - [fzf](https://github.com/junegunn/fzf#installation)
 - [bat](https://github.com/sharkdp/bat#installation)
 - [jq](https://github.com/stedolan/jq)
