@@ -13,7 +13,8 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.
 # fzf-tab
 git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fzf-tab
 
-# Backup zshrc file just in case
-mv ~/.zshrc ~/.zshrc.bk 
-ln -s ~/vim-my-way/shell/.zshrc ~/.zshrc
-ln -s ~/vim-my-way/shell/.p10k.zsh ~/.p10k.zsh
+# Backup files just in case
+[[ -f ~/.zshrc ]] && mv ~/.zshrc ~/.zshrc.bk 
+[[ -f ~/.p10k.zsh ]] && mv ~/.p10k.zsh ~/.p10k.zsh.bk 
+
+stow .

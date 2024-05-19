@@ -1,0 +1,8 @@
+\.git
+\.gitignore
+
+install.sh
+
+images
+bootstrap
+scripts
