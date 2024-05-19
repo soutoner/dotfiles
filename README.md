@@ -5,32 +5,39 @@ Personal configuration files.
 **Table of Contents**
 
 - [Shell Conf](#shell-conf)
-	- [Recommendations](#recommendations)
-	- [Utilities](#utilities)
-	- [Aliases](#aliases)
+  - [Requirements](#requirements)
+  - [Utilities](#utilities)
+  - [Aliases](#aliases)
 - [Tmux Conf](#tmux-conf)
 - [NeoVim](#neovim)
 - [Git Aliases](#git-aliases)
 - [Shell aliases](#shell-aliases)
 - [Linux Bootstrapping](#linux-bootstrapping)
-	- [Contents](#contents)
-	- [Usage](#usage)
+  - [Contents](#contents)
+  - [Usage](#usage)
 
 ## Shell Conf
 
-### Recommendations:
+### Requirements
 
-- (If not already installed) [Zsh](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH)
-- [Oh My Zsh](https://ohmyz.sh/#install)
-- [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md#oh-my-zsh)
-- [Nerd fonts](https://www.nerdfonts.com/font-downloads)
-- [Powerlevel10k](https://github.com/romkatv/powerlevel10k#oh-my-zsh) 
-
-### Utilities
-
+- `curl` or `wget`
+- `git`
 - [fzf](https://github.com/junegunn/fzf#installation)
+- [Zsh](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH)
+- [Nerd fonts](https://www.nerdfonts.com/font-downloads) of your choice
+
+### Steps
+
+```shell
+$ shell/install.sh
+```
+
+### Other utilities
+
 - [bat](https://github.com/sharkdp/bat#installation)
 - [jq](https://github.com/stedolan/jq)
+
+When Oh My Zsh is installed, you will enter a new shell session. Don't panic and just Ctrl + D to continue installation
 
 ### Aliases
 
@@ -43,8 +50,8 @@ $ ln -s ~/vim-my-way/shell/aliases.zsh $ZSH_CUSTOM
 ## Tmux Conf
 
 1. Get latest [tmux](https://github.com/tmux/tmux/wiki/Installing)
-2. Get latest [TPM](https://github.com/tmux-plugins/tpm#installation) 
-3. 
+2. Get latest [TPM](https://github.com/tmux-plugins/tpm#installation)
+3.
 
 ```
 $ mkdir ~/.config/tmux	# If it does not exist yet
@@ -78,7 +85,7 @@ Script with configuration file that will bootstrap your brand new linux! Please,
 ####################################################
 # Script that bootstraps a linux environment.
 # All the tools marked with (opt) can be marked
-# to install in the file "conf.yml". 
+# to install in the file "conf.yml".
 # Before executing this script please, take
 # a look at it!
 #
@@ -86,7 +93,7 @@ Script with configuration file that will bootstrap your brand new linux! Please,
 #   - Ubuntu MATE 15.10
 #
 # Contents:
-# 
+#
 #   . Utilities & tools
 #       - Curl
 #       - Composer
