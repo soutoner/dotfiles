@@ -2,30 +2,16 @@
 
 Personal configuration files. Powered by stow
 
-**Table of Contents**
-
-- [Shell Conf](#shell-conf)
-  - [Requirements](#requirements)
-  - [Utilities](#utilities)
-  - [Aliases](#aliases)
-- [Tmux Conf](#tmux-conf)
-- [NeoVim](#neovim)
-- [Git Aliases](#git-aliases)
-- [Shell aliases](#shell-aliases)
-- [Linux Bootstrapping](#linux-bootstrapping)
-  - [Contents](#contents)
-  - [Usage](#usage)
-
 ## Requirements
 
 - `curl` or `wget`
 - `git`
-- Stow (for symlink management)
+- `stow` (for symlink management)
 - [fzf](https://github.com/junegunn/fzf#installation)
 - [Zsh](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH)
 - [Nerd fonts](https://www.nerdfonts.com/font-downloads) of your choice
 
-###Steps
+## Steps
 
 ```shell
 $ install.sh
@@ -33,7 +19,7 @@ $ install.sh
 
 When Oh My Zsh is installed, you will enter a new shell session. Don't panic and just Ctrl + D to continue installation
 
-## Tmux Conf
+### Tmux Conf
 
 1. In order to install dependencies, do Ctrl > Space > I (uppercase)
 
