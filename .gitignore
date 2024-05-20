@@ -1,4 +1,4 @@
 .DS_Store
 *.log
 
-.config/tmux/plugins/
+dot-config/tmux/plugins/
