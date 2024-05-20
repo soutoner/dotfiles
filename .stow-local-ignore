@@ -1,8 +1,10 @@
 \.git
-\.gitignore
+\.config/tmux/plugins
 
 install.sh
 
 images
 bootstrap
 scripts
+
+^/README.*
