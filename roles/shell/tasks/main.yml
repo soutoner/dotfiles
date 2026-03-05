@@ -4,7 +4,7 @@
     name: "{{ user }}"
     shell: /usr/bin/zsh
   when: ansible_os_family == "Debian"
-  become: yes
+  become: "{{ should_become }}"
 
 - name: (macOS) Set zsh as default shell
   shell: |
@@ -20,7 +20,7 @@
 - name: Install oh-my-zsh
   shell: "wget -qO- {{ oh_my_zsh_url }} | sh"
   become_user: "{{ user }}"
-  become: yes
+  become: "{{ should_become }}"
   when: not oh_my_zsh_stat.stat.exists
 
 - name: Install zsh-syntax-highlighting plugin
@@ -29,7 +29,7 @@
     dest: "{{ oh_my_zsh_plugins_dir }}/zsh-syntax-highlighting"
     version: master
   become_user: "{{ user }}"
-  become: yes
+  become: "{{ should_become }}"
 
 - name: Install zsh-autosuggestions plugin
   git:
@@ -37,7 +37,7 @@
     dest: "{{ oh_my_zsh_plugins_dir }}/zsh-autosuggestions"
     version: master
   become_user: "{{ user }}"
-  become: yes
+  become: "{{ should_become }}"
 
 - name: Install zsh-completions plugin
   git:
@@ -45,7 +45,7 @@
     dest: "{{ oh_my_zsh_plugins_dir }}/zsh-completions"
     version: master
   become_user: "{{ user }}"
-  become: yes
+  become: "{{ should_become }}"
 
 - name: Install fzf-tab plugin
   git:
@@ -53,7 +53,7 @@
     dest: "{{ oh_my_zsh_plugins_dir }}/fzf-tab"
     version: master
   become_user: "{{ user }}"
-  become: yes
+  become: "{{ should_become }}"
 
 - name: Install powerlevel10k theme
   git:
@@ -61,4 +61,4 @@
     dest: "{{ oh_my_zsh_themes_dir }}/powerlevel10k"
     version: master
   become_user: "{{ user }}"
-  become: yes
+  become: "{{ should_become }}"

@@ -9,13 +9,13 @@
   shell: |
     sh /tmp/chezmoi-installer.sh
   become_user: "{{ user }}"
-  become: yes
+  become: "{{ should_become }}"
 
 - name: Initialize and apply chezmoi with local dotfiles
   shell: |
     ~/.local/bin/chezmoi init --apply --source "{{ dotfiles_dir }}"
   become_user: "{{ user }}"
-  become: yes
+  become: "{{ should_become }}"
 
 - name: Clean up chezmoi installer
   file:

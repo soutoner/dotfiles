@@ -1,13 +1,14 @@
 ---
 - name: Provision system with dotfiles
   hosts: localhost
-  become: "{{ 'yes' if ansible_os_family == 'Debian' else 'no' }}"
+  gather_facts: yes
   
   vars:
     user: "{{ ansible_user_id }}"
     home_dir: "{{ ansible_user_dir }}"
     dotfiles_dir: "{{ playbook_dir }}"
     group: "{{ 'staff' if ansible_os_family == 'Darwin' else user }}"
+    should_become: "{{ ansible_os_family == 'Debian' }}"
 
   roles:
     - common
@@ -22,3 +23,4 @@
         owner: "{{ user }}"
         group: "{{ group }}"
         recurse: yes
+      become: "{{ should_become }}"
