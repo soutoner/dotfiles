@@ -24,5 +24,14 @@
         path: "{{ home_dir }}"
         owner: "{{ user }}"
         group: "{{ group }}"
-        recurse: yes
       become: "{{ should_become }}"
+
+    - name: Fix permissions on dotfiles directories
+      shell: |
+        chown -R {{ user }}:{{ group }} "{{ home_dir }}/.config" 2>/dev/null || true
+        chown -R {{ user }}:{{ group }} "{{ home_dir }}/.local" 2>/dev/null || true
+        chown -R {{ user }}:{{ group }} "{{ home_dir }}/.oh-my-zsh" 2>/dev/null || true
+        chown -R {{ user }}:{{ group }} "{{ home_dir }}/.zshenv" 2>/dev/null || true
+        chown -R {{ user }}:{{ group }} "{{ home_dir }}/.tmux.conf" 2>/dev/null || true
+      become: "{{ should_become }}"
+      changed_when: false
