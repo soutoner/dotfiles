@@ -118,8 +118,8 @@
       become_user: "{{ user }}"
       become: yes
       environment:
-        CHEZMOI_NAME: "{{ chezmoi_name | default('') }}"
-        CHEZMOI_EMAIL: "{{ chezmoi_email | default('') }}"
+        CHEZMOI_GIT_NAME: "{{ chezmoi_git_name | default('') }}"
+        CHEZMOI_GIT_EMAIL: "{{ chezmoi_git_email | default('') }}"
 
     - name: Clean up chezmoi installer
       file:

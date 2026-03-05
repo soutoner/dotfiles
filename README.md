@@ -14,8 +14,8 @@ sudo apt-get update
 sudo apt-get install -y ansible
 
 ansible-playbook -i localhost, -c local provision.yml \
-  -e "chezmoi_name='Your Name'" \
-  -e "chezmoi_email='your.email@example.com'"
+  -e "chezmoi_git_name='Your Name'" \
+  -e "chezmoi_git_email='your.email@example.com'"
 ```
 
 The provisioner will install everything and apply dotfiles automatically.
@@ -23,8 +23,8 @@ The provisioner will install everything and apply dotfiles automatically.
 ### Apply to Existing System
 
 ```bash
-export CHEZMOI_NAME="Your Name"
-export CHEZMOI_EMAIL="your.email@example.com"
+export CHEZMOI_GIT_NAME="Your Name"
+export CHEZMOI_GIT_EMAIL="your.email@example.com"
 
 sh -c "$(wget -qO- get.chezmoi.io)" -- init --apply ~/dotfiles
 ```
@@ -86,15 +86,15 @@ Using XDG Base Directory Specification:
 
 ## Environment Variables
 
-Chezmoi loads these from environment variables via `.chezmoi.yaml.tmpl`:
+Chezmoi loads these from environment variables via `.chezmoi.yaml.tmpl` for git configuration:
 
-- `CHEZMOI_NAME` - Your name for git config
-- `CHEZMOI_EMAIL` - Your email for git config
+- `CHEZMOI_GIT_NAME` - Your name for git config
+- `CHEZMOI_GIT_EMAIL` - Your email for git config
 
 Set before applying:
 ```bash
-export CHEZMOI_NAME="Your Name"
-export CHEZMOI_EMAIL="your.email@example.com"
+export CHEZMOI_GIT_NAME="Your Name"
+export CHEZMOI_GIT_EMAIL="your.email@example.com"
 chezmoi apply
 ```
 
