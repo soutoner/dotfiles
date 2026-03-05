@@ -4,8 +4,10 @@
   gather_facts: yes
   
   vars:
-    user: "{{ ansible_user_id }}"
-    home_dir: "{{ ansible_user_dir }}"
+    # Get the actual user (handles both normal and sudo execution)
+    actual_user: "{{ ansible_user_id if ansible_user_id != 'root' else ansible_env.SUDO_USER | default(ansible_user_id) }}"
+    user: "{{ actual_user }}"
+    home_dir: "{{ ansible_env.HOME if ansible_user_id == actual_user else '/home/' + actual_user }}"
     dotfiles_dir: "{{ playbook_dir }}"
     group: "{{ 'staff' if ansible_os_family == 'Darwin' else user }}"
     should_become: "{{ ansible_os_family == 'Debian' }}"

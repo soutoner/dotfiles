@@ -21,6 +21,8 @@
   shell: "wget -qO- {{ oh_my_zsh_url }} | sh"
   become_user: "{{ user }}"
   become: "{{ should_become }}"
+  environment:
+    ZSH: "{{ home_dir }}/.oh-my-zsh"
   when: not oh_my_zsh_stat.stat.exists
 
 - name: Install zsh-syntax-highlighting plugin
