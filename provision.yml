@@ -112,9 +112,15 @@
         dest: "/tmp/chezmoi-installer.sh"
         mode: '0755'
 
-    - name: Install and initialize chezmoi with local dotfiles
+    - name: Install chezmoi binary
       shell: |
-        sh /tmp/chezmoi-installer.sh -- init --apply --source "{{ dotfiles_dir }}"
+        sh /tmp/chezmoi-installer.sh
+      become_user: "{{ user }}"
+      become: yes
+
+    - name: Initialize and apply chezmoi with local dotfiles
+      shell: |
+        ~/.local/bin/chezmoi init --apply --source "{{ dotfiles_dir }}"
       become_user: "{{ user }}"
       become: yes
       environment:

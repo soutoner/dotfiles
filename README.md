@@ -35,7 +35,7 @@ sh -c "$(wget -qO- get.chezmoi.io)" -- init --apply ~/dotfiles
 - **Powerlevel10k** theme with Pure-style configuration (minimalist 2-line prompt)
 - **Git** configuration with XDG compliance
 - **Tmux** configuration with XDG wrapper
-- **Chezmoi** for dotfiles management
+- **Chezmoi** installed and ready for managing dotfiles
 
 ## Configuration
 
