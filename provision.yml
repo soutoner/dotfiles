@@ -106,23 +106,15 @@
       become_user: "{{ user }}"
       become: yes
 
-    - name: Clone dotfiles repository
-      git:
-        repo: "{{ dotfiles_repo }}"
-        dest: "{{ home_dir }}/dotfiles"
-        version: main
-      become_user: "{{ user }}"
-      become: yes
-
     - name: Download chezmoi installer
       get_url:
         url: "{{ chezmoi_installer_url }}"
         dest: "/tmp/chezmoi-installer.sh"
         mode: '0755'
 
-    - name: Install chezmoi
+    - name: Install and initialize chezmoi with dotfiles
       shell: |
-        sh /tmp/chezmoi-installer.sh -- init --apply {{ github_user }} -S {{ home_dir }}/dotfiles
+        sh /tmp/chezmoi-installer.sh -- init --apply {{ github_user }}
       become_user: "{{ user }}"
       become: yes
       environment:
@@ -140,4 +132,3 @@
         owner: "{{ user }}"
         group: "{{ user }}"
         recurse: yes
-

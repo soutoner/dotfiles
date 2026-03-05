@@ -182,10 +182,10 @@ The playbook will:
   - zsh-completions
   - fzf-tab
 - Install powerlevel10k theme
-- Clone your dotfiles repository
-- Install and initialize chezmoi with your dotfiles
+- Download and initialize chezmoi with your dotfiles (automatically clones the repository)
+- Apply all dotfiles to your system
 
-After provisioning, your terminal will be ready to use with all plugins installed and configured!
+After provisioning, your terminal will be fully configured with all plugins, theme, and dotfiles applied!
 
 ## Managing Dotfiles
 
