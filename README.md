@@ -17,7 +17,7 @@ brew install ansible
 export CHEZMOI_GIT_NAME="Your Name"
 export CHEZMOI_GIT_EMAIL="your.email@example.com"
 
-# Run provisioner
+# Run provisioner (will use sudo where needed)
 ansible-playbook -i localhost, -c local provision.yml
 ```
 
@@ -35,11 +35,11 @@ sudo apt-get install -y ansible
 export CHEZMOI_GIT_NAME="Your Name"
 export CHEZMOI_GIT_EMAIL="your.email@example.com"
 
-# Run provisioner
-ansible-playbook -i localhost, -c local provision.yml
+# Run provisioner (will prompt for sudo password when needed)
+ansible-playbook -i localhost, -c local -K provision.yml
 ```
 
-The provisioner detects your OS and installs everything automatically.
+The provisioner detects your OS and installs everything automatically. Use the `-K` flag on Ubuntu to be prompted for your sudo password when needed (required for package installation with apt).
 
 ### Provisioning Architecture
 
@@ -63,6 +63,18 @@ Each role is self-contained with its own tasks and variables, making it easy to 
 - Uses `apt-get` for package management
 - Requires `sudo` for privilege escalation
 - Sets zsh as default shell using `usermod`
+
+### Privilege Escalation
+
+The provisioner uses Ansible's `become_user` to run most tasks as your regular user account, with `sudo` elevation only when necessary (e.g., for package installation on Ubuntu).
+
+- **macOS**: No sudo required (Homebrew is user-managed)
+- **Ubuntu**: Pass `-K` flag to ansible-playbook to prompt for sudo password:
+  ```bash
+  ansible-playbook -i localhost, -c local -K provision.yml
+  ```
+
+The playbook automatically detects your user and runs all dotfiles installation as your user, not as root.
 
 ### Apply to Existing System
 
