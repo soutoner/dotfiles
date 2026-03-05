@@ -7,11 +7,18 @@
 
 - name: Install chezmoi binary
   shell: |
-    sh /tmp/chezmoi-installer.sh
+    cd {{ home_dir }} && sh /tmp/chezmoi-installer.sh
   become_user: "{{ user }}"
   become: "{{ should_become }}"
   register: chezmoi_install
-  failed_when: chezmoi_install.rc != 0 and 'not found' not in chezmoi_install.stderr
+
+- name: Show chezmoi installer output
+  debug:
+    msg: |
+      Chezmoi installer output:
+      STDOUT: {{ chezmoi_install.stdout }}
+      STDERR: {{ chezmoi_install.stderr }}
+      RC: {{ chezmoi_install.rc }}
 
 - name: Verify chezmoi binary exists
   stat:
