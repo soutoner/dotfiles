@@ -11,6 +11,20 @@
     dotfiles_dir: "{{ playbook_dir }}"
     group: "{{ 'staff' if ansible_os_family == 'Darwin' else user }}"
     should_become: "{{ ansible_os_family == 'Debian' }}"
+    debug_mode: "{{ debug | default(false) }}"
+
+  pre_tasks:
+    - name: Display provisioning information
+      debug:
+        msg: |
+          Provisioning dotfiles for:
+          OS: {{ ansible_os_family }} ({{ ansible_distribution }})
+          User: {{ user }}
+          Home: {{ home_dir }}
+          Dotfiles: {{ dotfiles_dir }}
+          Using sudo: {{ should_become }}
+          Debug mode: {{ debug_mode }}
+      when: debug_mode | bool
 
   roles:
     - common

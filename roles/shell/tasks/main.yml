@@ -1,4 +1,12 @@
 ---
+- name: Display shell configuration
+  debug:
+    msg: |
+      Installing shell configuration:
+      - oh-my-zsh plugins directory: {{ oh_my_zsh_plugins_dir }}
+      - oh-my-zsh themes directory: {{ oh_my_zsh_themes_dir }}
+  when: debug_mode | default(false) | bool
+
 - name: (Ubuntu) Set zsh as default shell
   user:
     name: "{{ user }}"

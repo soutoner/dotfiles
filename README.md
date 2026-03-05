@@ -76,6 +76,34 @@ The provisioner uses Ansible's `become_user` to run most tasks as your regular u
 
 The playbook automatically detects your user and runs all dotfiles installation as your user, not as root.
 
+### Debugging the Provisioner
+
+If you encounter issues during provisioning, you can enable debugging with the `-e` flag:
+
+```bash
+# Enable debug mode (shows configuration and variables)
+ansible-playbook -i localhost, -c local -K -e debug=true provision.yml
+
+# Increase verbosity for more details
+ansible-playbook -i localhost, -c local -K -v provision.yml    # -v (verbose)
+ansible-playbook -i localhost, -c local -K -vv provision.yml   # -vv (more verbose)
+ansible-playbook -i localhost, -c local -K -vvv provision.yml  # -vvv (debug output)
+
+# Combine debug mode with verbosity
+ansible-playbook -i localhost, -c local -K -e debug=true -vv provision.yml
+```
+
+**Debug mode** displays:
+- OS and distribution information
+- Current user and home directory
+- Whether sudo will be used
+- Shell configuration paths
+
+**Verbosity flags** show:
+- `-v`: Task results and output
+- `-vv`: Variable values and task details
+- `-vvv`: Full debug output including internal operations
+
 ### Apply to Existing System
 
 ```bash
