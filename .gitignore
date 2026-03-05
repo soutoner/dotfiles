@@ -6,13 +6,7 @@
 
 # Chezmoi state - DO NOT COMMIT
 .chezmoi.yaml
-.chezmoi.toml
 chezmoi.json
-
-# Environment variables and secrets - DO NOT COMMIT
-.env
-.env.local
-.env.*.local
 
 # IDE
 .vscode/
@@ -26,4 +20,3 @@ chezmoi.json
 
 # OS
 Thumbs.db
-
