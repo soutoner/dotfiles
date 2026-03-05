@@ -1,4 +1,0 @@
-{{- /* chezmoi template for loading git configuration from environment */ -}}
-data:
-  name: {{ env "CHEZMOI_GIT_NAME" | default "User" }}
-  email: {{ env "CHEZMOI_GIT_EMAIL" | default "user@example.com" }}

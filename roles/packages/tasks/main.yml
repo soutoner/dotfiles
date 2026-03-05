@@ -20,10 +20,12 @@
   apt:
     update_cache: yes
     cache_valid_time: 3600
+  become: yes
   when: ansible_os_family == "Debian"
 
 - name: (Ubuntu) Install packages
   apt:
     name: "{{ packages_ubuntu }}"
     state: present
+  become: yes
   when: ansible_os_family == "Debian"

@@ -1,0 +1,60 @@
+---
+- name: Check if git is installed
+  command: which git
+  register: git_check
+  failed_when: false
+  changed_when: false
+
+- name: Check if go is installed
+  command: which go
+  register: go_check
+  failed_when: false
+  changed_when: false
+
+- name: Install build dependencies (Ubuntu) if not present
+  apt:
+    name:
+      - "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - git
+    - golang-go
+  when:
+    - ansible_os_family == "Debian"
+    - (item == "git" and git_check.rc != 0) or (item == "golang-go" and go_check.rc != 0)
+
+- name: Ensure ~/.local/src directory exists
+  file:
+    path: "{{ ansible_user_dir }}/.local/src"
+    state: directory
+    mode: '0755'
+
+- name: Clone fzf repository
+  git:
+    repo: https://github.com/junegunn/fzf.git
+    dest: "{{ ansible_user_dir }}/.local/src/fzf"
+    version: master
+    update: yes
+
+- name: Build fzf from source
+  shell: |
+    cd {{ ansible_user_dir }}/.local/src/fzf
+    ./install --bin --no-bash --no-fish
+  args:
+    executable: /bin/bash
+
+- name: Symlink fzf binary to ~/.local/bin
+  file:
+    src: "{{ ansible_user_dir }}/.local/src/fzf/bin/fzf"
+    dest: "{{ ansible_user_dir }}/.local/bin/fzf"
+    state: link
+    force: yes
+
+- name: Symlink fzf-tmux to ~/.local/bin
+  file:
+    src: "{{ ansible_user_dir }}/.local/src/fzf/bin/fzf-tmux"
+    dest: "{{ ansible_user_dir }}/.local/bin/fzf-tmux"
+    state: link
+    force: yes
+

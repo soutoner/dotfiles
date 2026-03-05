@@ -1,0 +1,6 @@
+---
+- name: (Ubuntu) Install Catppuccin theme for GNOME Terminal
+  shell: |
+    curl -L {{ catppuccin_gnome_terminal_install_url }} | python3 -
+  become_user: "{{ user }}"
+  when: ansible_os_family == "Debian"

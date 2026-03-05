@@ -1,4 +1,0 @@
-# ZSH environment configuration
-# This file tells zsh to use XDG Base Directory specifications
-
-export ZDOTDIR="$HOME/.config/zsh"

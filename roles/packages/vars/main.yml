@@ -1,16 +1,15 @@
 ---
 packages_ubuntu:
   - git
-  - zsh
+  - fish
   - tmux
   - vim
   - wget
   - curl
-  - fzf
 
 packages_macos:
   - git
-  - zsh
+  - fish
   - tmux
   - vim
   - wget

@@ -1,230 +1,120 @@
 # Dotfiles
 
-XDG-compliant dotfiles for zsh, tmux, and git using chezmoi for management. Works on macOS and Ubuntu.
+Minimal, modern dotfiles for fish shell, tmux, and git using chezmoi. Works on macOS and Ubuntu/WSL2.
 
 ## Quick Start
 
-### Provision macOS
-
+### macOS
 ```bash
 git clone https://github.com/your-username/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-
-# Install Ansible
 brew install ansible
-
-# Set your git configuration
 export CHEZMOI_GIT_NAME="Your Name"
 export CHEZMOI_GIT_EMAIL="your.email@example.com"
-
-# Run provisioner (will use sudo where needed)
 ansible-playbook -i localhost, -c local provision.yml
 ```
 
-### Provision Ubuntu
-
+### Ubuntu / WSL2
 ```bash
 git clone https://github.com/your-username/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-
-# Install Ansible
-sudo apt-get update
-sudo apt-get install -y ansible
-
-# Set your git configuration
+sudo apt-get update && sudo apt-get install -y ansible
 export CHEZMOI_GIT_NAME="Your Name"
 export CHEZMOI_GIT_EMAIL="your.email@example.com"
-
-# Run provisioner (will prompt for sudo password when needed)
 ansible-playbook -i localhost, -c local -K provision.yml
 ```
 
-The provisioner detects your OS and installs everything automatically. Use the `-K` flag on Ubuntu to be prompted for your sudo password when needed (required for package installation with apt).
+Use the `-K` flag on Ubuntu to be prompted for your sudo password.
 
-### Provisioning Architecture
+### Selective Installation
 
-The provisioner is organized using Ansible roles for clarity and maintainability:
-
-- **common**: Creates necessary directories (.oh-my-zsh, plugins, themes)
-- **packages**: Installs packages using platform-specific package managers (Homebrew for macOS, apt for Ubuntu)
-- **shell**: Sets default shell, installs oh-my-zsh, and configures all plugins and themes
-- **chezmoi**: Installs chezmoi and applies your dotfiles
-
-Each role is self-contained with its own tasks and variables, making it easy to modify or extend.
-
-### Platform Notes
-
-**macOS:**
-- Installs Homebrew (if not present) and uses it for package management
-- Sets zsh as default shell using `dscl`
-- Group ownership uses `staff` instead of user
-
-**Ubuntu:**
-- Uses `apt-get` for package management
-- Requires `sudo` for privilege escalation
-- Sets zsh as default shell using `usermod`
-
-### Privilege Escalation
-
-The provisioner uses Ansible's `become_user` to run most tasks as your regular user account, with `sudo` elevation only when necessary (e.g., for package installation on Ubuntu).
-
-- **macOS**: No sudo required (Homebrew is user-managed)
-- **Ubuntu**: Pass `-K` flag to ansible-playbook to prompt for sudo password:
-  ```bash
-  ansible-playbook -i localhost, -c local -K provision.yml
-  ```
-
-The playbook automatically detects your user and runs all dotfiles installation as your user, not as root.
-
-### Debugging the Provisioner
-
-If you encounter issues during provisioning, you can enable debugging with the `-e` flag:
-
+Install specific roles using tags:
 ```bash
-# Enable debug mode (shows configuration and variables)
-ansible-playbook -i localhost, -c local -K -e debug=true provision.yml
+# Install only fish and fzf
+ansible-playbook -i localhost, -c local provision.yml --tags=fish,fzf
 
-# Increase verbosity for more details
-ansible-playbook -i localhost, -c local -K -v provision.yml    # -v (verbose)
-ansible-playbook -i localhost, -c local -K -vv provision.yml   # -vv (more verbose)
-ansible-playbook -i localhost, -c local -K -vvv provision.yml  # -vvv (debug output)
-
-# Combine debug mode with verbosity
-ansible-playbook -i localhost, -c local -K -e debug=true -vv provision.yml
+# Skip tmux installation
+ansible-playbook -i localhost, -c local provision.yml --skip-tags=tmux
 ```
 
-**Debug mode** displays:
-- OS and distribution information
-- Current user and home directory
-- Whether sudo will be used
-- Shell configuration paths
+Available tags: `packages`, `fish`, `fzf`, `tmux`, `gnome-terminal`, `chezmoi`
 
-**Verbosity flags** show:
-- `-v`: Task results and output
-- `-vv`: Variable values and task details
-- `-vvv`: Full debug output including internal operations
+## What Gets Installed
 
-### Apply to Existing System
+- **Fish** shell with built-in syntax highlighting, autosuggestions, and completions
+- **FZF** built from source for fuzzy finding and history search
+- **Git** configuration (XDG-compliant)
+- **Tmux** configuration with plugin manager (tpm)
+- **Chezmoi** for dotfiles management
 
+## Post-Installation Steps
+
+### GNOME Terminal Theme (Ubuntu)
+The Catppuccin Mocha theme is automatically installed via the `gnome-terminal` role. To apply it:
+1. Open GNOME Terminal → Edit → Preferences (or Ctrl+,)
+2. Go to Profiles tab → Select profile → Appearance section
+3. Choose "Catppuccin Mocha" from the Color scheme dropdown
+4. Close and reopen terminal for changes to take effect
+
+You can skip this role during provisioning with `--skip-tags=gnome-terminal` if you prefer not to install the theme.
+
+### Tmux Plugins
+Start tmux and install plugins:
 ```bash
-export CHEZMOI_GIT_NAME="Your Name"
-export CHEZMOI_GIT_EMAIL="your.email@example.com"
-
-sh -c "$(wget -qO- get.chezmoi.io)" -- init --apply ~/dotfiles
+tmux
 ```
+Press prefix + `I` to install plugins:
+- **macOS**: `` ` `` + `I`
+- **Linux**: `Ctrl-Space` + `I`
 
-## What You Get
+### Set Fish as Default Shell
 
-- **Zsh** with oh-my-zsh and plugins (syntax-highlighting, autosuggestions, completions, fzf-tab)
-- **Powerlevel10k** theme with Pure-style configuration (minimalist 2-line prompt)
-- **Git** configuration with XDG compliance
-- **Tmux** configuration with XDG wrapper
-- **Chezmoi** installed and ready for managing dotfiles
-
-## Configuration
-
-### Powerlevel10k Prompt
-
-Reconfigure the prompt:
+If your system doesn't set fish as your default shell during provisioning, set it manually:
 ```bash
-p10k configure
+chsh -s $(which fish)
 ```
-
-Edit directly:
-```bash
-$EDITOR ~/.config/zsh/.p10k.zsh
-```
-
-Features:
-- 2-line layout: directory + git status on line 1, prompt symbol on line 2
-- 24-hour time format
-- Transient prompt (simplifies after command execution)
-- Instant prompt (cached prompt while plugins load)
 
 ## Managing Dotfiles
 
 ```bash
-# Update from repository
-chezmoi update
-
-# Edit a dotfile
-chezmoi edit ~/.config/zsh/zshrc
-
-# See what would change
-chezmoi diff
-
-# Apply changes
-chezmoi apply
+chezmoi update      # Update from repository
+chezmoi edit FILE   # Edit a dotfile
+chezmoi diff        # See what would change
+chezmoi apply       # Apply changes
 ```
 
 ## File Organization
 
-Using XDG Base Directory Specification:
-
-- `~/.zshenv` - Sets ZDOTDIR to ~/.config/zsh
-- `~/.config/zsh/zshrc` - Zsh configuration
-- `~/.config/zsh/.p10k.zsh` - Powerlevel10k configuration
-- `~/.config/git/config` - Git configuration
-- `~/.config/tmux/tmux.conf` - Tmux configuration
-- `~/.tmux.conf` - Wrapper sourcing ~/.config/tmux/tmux.conf (tmux doesn't natively support XDG)
+- `~/.config/fish/config.fish` - Fish shell configuration (XDG-compliant)
+- `~/.config/fish/functions/` - Fish functions
+- `~/.config/git/config` - Git configuration (XDG-compliant)
+- `~/.config/tmux/tmux.conf` - Tmux configuration (XDG-compliant)
 
 ## Environment Variables
 
-Chezmoi reads the following OS environment variables for git configuration:
-
+Set before provisioning or applying:
 - `CHEZMOI_GIT_NAME` - Your name for git config
 - `CHEZMOI_GIT_EMAIL` - Your email for git config
 
-Set these variables before provisioning or applying dotfiles:
-
-```bash
-export CHEZMOI_GIT_NAME="Your Name"
-export CHEZMOI_GIT_EMAIL="your.email@example.com"
-ansible-playbook -i localhost, -c local provision.yml
-```
-
-Or apply chezmoi directly:
 ```bash
 export CHEZMOI_GIT_NAME="Your Name"
 export CHEZMOI_GIT_EMAIL="your.email@example.com"
 chezmoi apply
 ```
 
-## Repository Structure
+## Why Fish?
 
-```
-dotfiles/
-├── home/                                    # Dotfiles managed by chezmoi
-│   ├── dot_config/
-│   │   ├── git/config
-│   │   ├── zsh/
-│   │   │   ├── zshrc
-│   │   │   └── dot_p10k.zsh
-│   │   └── tmux/tmux.conf
-│   ├── dot_zshenv
-│   └── dot_tmux.conf
-├── roles/                                   # Ansible roles for provisioning
-│   ├── common/
-│   │   ├── tasks/main.yml                  # Create directories
-│   │   └── vars/main.yml
-│   ├── packages/
-│   │   ├── tasks/main.yml                  # Install packages (macOS & Ubuntu)
-│   │   └── vars/main.yml
-│   ├── shell/
-│   │   ├── tasks/main.yml                  # Set shell, install oh-my-zsh & plugins
-│   │   └── vars/main.yml
-│   └── chezmoi/
-│       ├── tasks/main.yml                  # Install & initialize chezmoi
-│       └── vars/main.yml
-├── .chezmoi.yaml.tmpl                      # Chezmoi config with templates
-├── .gitignore
-├── provision.yml                           # Main provisioning playbook
-└── README.md
-```
+Fish shell is a user-friendly shell with modern features out-of-the-box:
+- **Built-in syntax highlighting** - No plugins needed
+- **Built-in autosuggestions** - Smart history-based suggestions
+- **Built-in completions** - Powerful and easy to configure
+- **XDG compliant** - Automatically uses `~/.config/fish/`
+- **Simple configuration** - Function-based, easy to understand
 
 ## Links
 
+- [Fish Shell](https://fishshell.com/)
+- [FZF](https://github.com/junegunn/fzf)
 - [Chezmoi](https://www.chezmoi.io/)
-- [Oh My Zsh](https://ohmyz.sh/)
-- [Powerlevel10k](https://github.com/romkatv/powerlevel10k)
 - [Tmux](https://github.com/tmux/tmux)
+

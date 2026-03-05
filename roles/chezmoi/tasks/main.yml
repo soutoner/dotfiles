@@ -1,23 +1,29 @@
 ---
+- name: Check if chezmoi is already installed
+  stat:
+    path: "{{ home_dir }}/.local/bin/chezmoi"
+  register: chezmoi_binary
+
 - name: Download chezmoi installer
   get_url:
     url: "{{ chezmoi_installer_url }}"
     dest: "/tmp/chezmoi-installer.sh"
     mode: '0755'
+  when: not chezmoi_binary.stat.exists
 
 - name: Install chezmoi binary
   shell: |
     sh /tmp/chezmoi-installer.sh -b {{ home_dir }}/.local/bin
   become_user: "{{ user }}"
-  become: "{{ should_become }}"
+  when: not chezmoi_binary.stat.exists
 
 - name: Initialize and apply chezmoi with local dotfiles
   shell: |
-    {{ home_dir }}/.local/bin/chezmoi init --apply --source "{{ dotfiles_dir }}"
+    {{ home_dir }}/.local/bin/chezmoi init --apply --source "{{ dotfiles_dir }}/home"
   become_user: "{{ user }}"
-  become: "{{ should_become }}"
 
 - name: Clean up chezmoi installer
   file:
     path: "/tmp/chezmoi-installer.sh"
     state: absent
+  when: not chezmoi_binary.stat.exists

@@ -1,0 +1,21 @@
+---
+- name: Create tmux plugins directory
+  file:
+    path: "{{ home_dir }}/.tmux/plugins"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: '0755'
+
+- name: Check if tpm (tmux plugin manager) is installed
+  stat:
+    path: "{{ home_dir }}/.tmux/plugins/tpm"
+  register: tpm_stat
+
+- name: Install tpm (tmux plugin manager)
+  git:
+    repo: "{{ tpm_url }}"
+    dest: "{{ home_dir }}/.tmux/plugins/tpm"
+    version: master
+  become_user: "{{ user }}"
+  when: not tpm_stat.stat.exists
