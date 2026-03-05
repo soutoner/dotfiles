@@ -1,0 +1,28 @@
+# Temporary files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Chezmoi state - DO NOT COMMIT
+.chezmoi.yaml
+.chezmoi.toml
+chezmoi.json
+
+# Environment variables and secrets - DO NOT COMMIT
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ansible
+*.retry
+.ansible/
+
+# OS
+Thumbs.db

@@ -1,0 +1,4 @@
+{{- /* chezmoi template for loading sensitive/dynamic data */ -}}
+data:
+  name: {{ env "CHEZMOI_NAME" | default "User" }}
+  email: {{ env "CHEZMOI_EMAIL" | default "user@example.com" }}
