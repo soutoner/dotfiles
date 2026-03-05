@@ -136,34 +136,40 @@ Using XDG Base Directory Specification:
 
 ## Environment Variables
 
-### During Provisioning
+There are two different contexts where variables are used:
 
-You can provide git configuration in two ways:
+### 1. During Provisioning (Ansible)
 
-**Option 1: Environment variables**
+When running the provisioner with Ansible, provide git configuration via:
+
+**Option A: Environment variables**
 ```bash
 export CHEZMOI_GIT_NAME="Your Name"
 export CHEZMOI_GIT_EMAIL="your.email@example.com"
 ansible-playbook -i localhost, -c local provision.yml
 ```
 
-**Option 2: Ansible vars file**
+**Option B: Ansible vars file** (recommended)
 ```bash
 cp vars.yml.example vars.yml
 # Edit vars.yml with your values
 ansible-playbook -i localhost, -c local provision.yml -e @vars.yml
 ```
 
-### After Provisioning
+### 2. After Provisioning (Chezmoi)
 
-To update git configuration later:
+After provisioning, use chezmoi's native `.env` file support to manage git configuration:
+
 ```bash
-export CHEZMOI_GIT_NAME="Your Name"
-export CHEZMOI_GIT_EMAIL="your.email@example.com"
+cp .env.example .env
+# Edit .env with your values
 chezmoi apply
 ```
 
-Variables used:
+Chezmoi reads the `.env` file and uses variables in templates via `{{ env "VARIABLE_NAME" }}`.
+
+### Variables Reference
+
 - `CHEZMOI_GIT_NAME` - Your name for git config
 - `CHEZMOI_GIT_EMAIL` - Your email for git config
 
