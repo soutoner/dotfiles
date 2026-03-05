@@ -18,11 +18,12 @@
   register: oh_my_zsh_stat
 
 - name: Install oh-my-zsh
-  shell: "wget -qO- {{ oh_my_zsh_url }} | sh"
+  shell: "ZSH= wget -qO- {{ oh_my_zsh_url }} | sh"
   become_user: "{{ user }}"
   become: "{{ should_become }}"
-  environment:
-    ZSH: "{{ home_dir }}/.oh-my-zsh"
+  failed_when: false
+  changed_when: "'not recognized' not in result.stdout and 'already exists' not in result.stdout"
+  register: result
   when: not oh_my_zsh_stat.stat.exists
 
 - name: Install zsh-syntax-highlighting plugin
