@@ -5,7 +5,7 @@
   vars:
     user: "{{ ansible_user_id }}"
     home_dir: "/home/{{ user }}"
-    dotfiles_repo: "https://github.com/{{ github_user }}/dotfiles.git"
+    dotfiles_dir: "{{ playbook_dir }}"
     oh_my_zsh_url: "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
     chezmoi_installer_url: "https://get.chezmoi.io"
     oh_my_zsh_plugins_dir: "{{ home_dir }}/.oh-my-zsh/custom/plugins"
@@ -112,9 +112,9 @@
         dest: "/tmp/chezmoi-installer.sh"
         mode: '0755'
 
-    - name: Install and initialize chezmoi with dotfiles
+    - name: Install and initialize chezmoi with local dotfiles
       shell: |
-        sh /tmp/chezmoi-installer.sh -- init --apply {{ github_user }}
+        sh /tmp/chezmoi-installer.sh -- init --apply --source "{{ dotfiles_dir }}"
       become_user: "{{ user }}"
       become: yes
       environment:
