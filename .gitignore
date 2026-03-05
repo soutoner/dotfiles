@@ -13,6 +13,7 @@ chezmoi.json
 .env
 .env.local
 .env.*.local
+vars.yml
 
 # IDE
 .vscode/
@@ -26,3 +27,4 @@ chezmoi.json
 
 # OS
 Thumbs.db
+
