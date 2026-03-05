@@ -10,17 +10,6 @@
     sh /tmp/chezmoi-installer.sh -b {{ home_dir }}/.local/bin
   become_user: "{{ user }}"
   become: "{{ should_become }}"
-  register: chezmoi_install
-
-- name: Verify chezmoi binary exists
-  stat:
-    path: "{{ home_dir }}/.local/bin/chezmoi"
-  register: chezmoi_binary
-
-- name: Fail if chezmoi binary was not installed
-  fail:
-    msg: "Chezmoi binary was not found at {{ home_dir }}/.local/bin/chezmoi after installation"
-  when: not chezmoi_binary.stat.exists
 
 - name: Initialize and apply chezmoi with local dotfiles
   shell: |

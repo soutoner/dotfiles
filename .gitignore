@@ -10,9 +10,6 @@ chezmoi.json
 
 # IDE
 .vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
 
 # Ansible
 *.retry
