@@ -1,0 +1,24 @@
+---
+- name: Create .oh-my-zsh directory
+  file:
+    path: "{{ home_dir }}/.oh-my-zsh"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: '0755'
+
+- name: Create oh-my-zsh custom plugins directory
+  file:
+    path: "{{ oh_my_zsh_plugins_dir }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: '0755'
+
+- name: Create oh-my-zsh custom themes directory
+  file:
+    path: "{{ oh_my_zsh_themes_dir }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: '0755'

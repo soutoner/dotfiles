@@ -37,6 +37,17 @@ ansible-playbook -i localhost, -c local provision.yml \
 
 The provisioner detects your OS and installs everything automatically.
 
+### Provisioning Architecture
+
+The provisioner is organized using Ansible roles for clarity and maintainability:
+
+- **common**: Creates necessary directories (.oh-my-zsh, plugins, themes)
+- **packages**: Installs packages using platform-specific package managers (Homebrew for macOS, apt for Ubuntu)
+- **shell**: Sets default shell, installs oh-my-zsh, and configures all plugins and themes
+- **chezmoi**: Installs chezmoi and applies your dotfiles
+
+Each role is self-contained with its own tasks and variables, making it easy to modify or extend.
+
 ### Platform Notes
 
 **macOS:**
@@ -131,7 +142,7 @@ chezmoi apply
 
 ```
 dotfiles/
-├── home/                          # Dotfiles managed by chezmoi
+├── home/                                    # Dotfiles managed by chezmoi
 │   ├── dot_config/
 │   │   ├── git/config
 │   │   ├── zsh/
@@ -140,9 +151,22 @@ dotfiles/
 │   │   └── tmux/tmux.conf
 │   ├── dot_zshenv
 │   └── dot_tmux.conf
-├── .chezmoi.yaml.tmpl             # Chezmoi config with templates
+├── roles/                                   # Ansible roles for provisioning
+│   ├── common/
+│   │   ├── tasks/main.yml                  # Create directories
+│   │   └── vars/main.yml
+│   ├── packages/
+│   │   ├── tasks/main.yml                  # Install packages (macOS & Ubuntu)
+│   │   └── vars/main.yml
+│   ├── shell/
+│   │   ├── tasks/main.yml                  # Set shell, install oh-my-zsh & plugins
+│   │   └── vars/main.yml
+│   └── chezmoi/
+│       ├── tasks/main.yml                  # Install & initialize chezmoi
+│       └── vars/main.yml
+├── .chezmoi.yaml.tmpl                      # Chezmoi config with templates
 ├── .gitignore
-├── provision.yml                  # Ansible provisioning playbook
+├── provision.yml                           # Main provisioning playbook
 └── README.md
 ```
 

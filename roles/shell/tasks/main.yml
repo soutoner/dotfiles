@@ -1,0 +1,64 @@
+---
+- name: (Ubuntu) Set zsh as default shell
+  user:
+    name: "{{ user }}"
+    shell: /usr/bin/zsh
+  when: ansible_os_family == "Debian"
+  become: yes
+
+- name: (macOS) Set zsh as default shell
+  shell: |
+    dscl . -change /Users/{{ user }} UserShell {{ ansible_user_shell }} /usr/local/bin/zsh
+  when: ansible_os_family == "Darwin"
+  failed_when: false
+
+- name: Check if oh-my-zsh is already installed
+  stat:
+    path: "{{ home_dir }}/.oh-my-zsh/oh-my-zsh.sh"
+  register: oh_my_zsh_stat
+
+- name: Install oh-my-zsh
+  shell: "wget -qO- {{ oh_my_zsh_url }} | sh"
+  become_user: "{{ user }}"
+  become: yes
+  when: not oh_my_zsh_stat.stat.exists
+
+- name: Install zsh-syntax-highlighting plugin
+  git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    dest: "{{ oh_my_zsh_plugins_dir }}/zsh-syntax-highlighting"
+    version: master
+  become_user: "{{ user }}"
+  become: yes
+
+- name: Install zsh-autosuggestions plugin
+  git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
+    dest: "{{ oh_my_zsh_plugins_dir }}/zsh-autosuggestions"
+    version: master
+  become_user: "{{ user }}"
+  become: yes
+
+- name: Install zsh-completions plugin
+  git:
+    repo: "https://github.com/zsh-users/zsh-completions.git"
+    dest: "{{ oh_my_zsh_plugins_dir }}/zsh-completions"
+    version: master
+  become_user: "{{ user }}"
+  become: yes
+
+- name: Install fzf-tab plugin
+  git:
+    repo: "https://github.com/Aloxaf/fzf-tab.git"
+    dest: "{{ oh_my_zsh_plugins_dir }}/fzf-tab"
+    version: master
+  become_user: "{{ user }}"
+  become: yes
+
+- name: Install powerlevel10k theme
+  git:
+    repo: "https://github.com/romkatv/powerlevel10k.git"
+    dest: "{{ oh_my_zsh_themes_dir }}/powerlevel10k"
+    version: master
+  become_user: "{{ user }}"
+  become: yes

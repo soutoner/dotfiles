@@ -1,0 +1,29 @@
+---
+- name: (macOS) Ensure Homebrew is installed
+  shell: |
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  when: ansible_os_family == "Darwin"
+  failed_when: false
+
+- name: (macOS) Update Homebrew
+  homebrew:
+    update_homebrew: yes
+  when: ansible_os_family == "Darwin"
+
+- name: (macOS) Install packages
+  homebrew:
+    name: "{{ packages_macos }}"
+    state: present
+  when: ansible_os_family == "Darwin"
+
+- name: (Ubuntu) Update package manager cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+
+- name: (Ubuntu) Install packages
+  apt:
+    name: "{{ packages_ubuntu }}"
+    state: present
+  when: ansible_os_family == "Debian"
