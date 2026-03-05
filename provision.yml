@@ -5,13 +5,11 @@
   
   vars:
     # Get the actual user (handles both normal and sudo execution)
-    actual_user: "{{ ansible_user_id if ansible_user_id != 'root' else ansible_env.SUDO_USER | default(ansible_user_id) }}"
-    user: "{{ actual_user }}"
-    home_dir: "{{ ansible_env.HOME if ansible_user_id == actual_user else '/home/' + actual_user }}"
+    user: "{{ ansible_user_id if ansible_user_id != 'root' else ansible_env.SUDO_USER | default(ansible_user_id) }}"
+    home_dir: "{{ ansible_user_dir if ansible_user_id != 'root' else ansible_env.HOME | default('/home/' + (ansible_env.SUDO_USER | default(ansible_user_id))) }}"
     dotfiles_dir: "{{ playbook_dir }}"
     group: "{{ 'staff' if ansible_os_family == 'Darwin' else user }}"
     should_become: "{{ ansible_os_family == 'Debian' }}"
-    debug_mode: "{{ debug | default(false) }}"
 
   pre_tasks:
     - name: Display provisioning information
@@ -23,8 +21,7 @@
           Home: {{ home_dir }}
           Dotfiles: {{ dotfiles_dir }}
           Using sudo: {{ should_become }}
-          Debug mode: {{ debug_mode }}
-      when: debug_mode | bool
+      when: debug | default(false) | bool
 
   roles:
     - common
