@@ -1,10 +1,10 @@
 ---
-- name: Provision Ubuntu system with dotfiles
+- name: Provision system with dotfiles
   hosts: localhost
-  become: yes
+  become: "{{ 'yes' if ansible_os_family == 'Debian' else 'no' }}"
   vars:
     user: "{{ ansible_user_id }}"
-    home_dir: "/home/{{ user }}"
+    home_dir: "{{ ansible_user_dir }}"
     dotfiles_dir: "{{ playbook_dir }}"
     oh_my_zsh_url: "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
     chezmoi_installer_url: "https://get.chezmoi.io"
@@ -12,12 +12,39 @@
     oh_my_zsh_themes_dir: "{{ home_dir }}/.oh-my-zsh/custom/themes"
 
   tasks:
-    - name: Update package manager cache
+    # macOS specific setup
+    - name: (macOS) Ensure Homebrew is installed
+      shell: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      when: ansible_os_family == "Darwin"
+      failed_when: false
+
+    - name: (macOS) Update Homebrew
+      homebrew:
+        update_homebrew: yes
+      when: ansible_os_family == "Darwin"
+
+    - name: (macOS) Install required packages
+      homebrew:
+        name:
+          - git
+          - zsh
+          - tmux
+          - vim
+          - wget
+          - curl
+          - fzf
+        state: present
+      when: ansible_os_family == "Darwin"
+
+    # Ubuntu specific setup
+    - name: (Ubuntu) Update package manager cache
       apt:
         update_cache: yes
         cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
 
-    - name: Install required packages
+    - name: (Ubuntu) Install required packages
       apt:
         name:
           - git
@@ -28,25 +55,36 @@
           - curl
           - fzf
         state: present
+      when: ansible_os_family == "Debian"
 
+    # Common setup for both platforms
     - name: Set zsh as default shell
       user:
         name: "{{ user }}"
-        shell: /usr/bin/zsh
+        shell: "{% if ansible_os_family == 'Darwin' %}/usr/local/bin/zsh{% else %}/usr/bin/zsh{% endif %}"
+      when: ansible_os_family == "Debian"
+      become: yes
+
+    - name: (macOS) Set zsh as default shell
+      shell: |
+        dscl . -change /Users/{{ user }} UserShell {{ ansible_user_shell }} /usr/local/bin/zsh
+      when: ansible_os_family == "Darwin"
+      failed_when: false
 
     - name: Create .oh-my-zsh directory
       file:
         path: "{{ home_dir }}/.oh-my-zsh"
         state: directory
         owner: "{{ user }}"
-        group: "{{ user }}"
+        group: "{{ 'staff' if ansible_os_family == 'Darwin' else user }}"
+        mode: '0755'
 
     - name: Check if oh-my-zsh is already installed
       stat:
         path: "{{ home_dir }}/.oh-my-zsh/oh-my-zsh.sh"
       register: oh_my_zsh_stat
 
-    - name: Install oh-my-zsh using wget
+    - name: Install oh-my-zsh
       shell: "wget -qO- {{ oh_my_zsh_url }} | sh"
       become_user: "{{ user }}"
       become: yes
@@ -57,14 +95,16 @@
         path: "{{ oh_my_zsh_plugins_dir }}"
         state: directory
         owner: "{{ user }}"
-        group: "{{ user }}"
+        group: "{{ 'staff' if ansible_os_family == 'Darwin' else user }}"
+        mode: '0755'
 
     - name: Create oh-my-zsh custom themes directory
       file:
         path: "{{ oh_my_zsh_themes_dir }}"
         state: directory
         owner: "{{ user }}"
-        group: "{{ user }}"
+        group: "{{ 'staff' if ansible_os_family == 'Darwin' else user }}"
+        mode: '0755'
 
     - name: Install zsh-syntax-highlighting plugin
       git:
@@ -136,5 +176,5 @@
       file:
         path: "{{ home_dir }}"
         owner: "{{ user }}"
-        group: "{{ user }}"
+        group: "{{ 'staff' if ansible_os_family == 'Darwin' else user }}"
         recurse: yes

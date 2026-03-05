@@ -1,24 +1,53 @@
 # Dotfiles
 
-XDG-compliant dotfiles for zsh, tmux, and git using chezmoi for management.
+XDG-compliant dotfiles for zsh, tmux, and git using chezmoi for management. Works on macOS and Ubuntu.
 
 ## Quick Start
 
-### Provision a Fresh Ubuntu System
+### Provision macOS
 
 ```bash
 git clone https://github.com/your-username/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 
-sudo apt-get update
-sudo apt-get install -y ansible
+# Install Ansible
+brew install ansible
 
+# Run provisioner
 ansible-playbook -i localhost, -c local provision.yml \
   -e "chezmoi_git_name='Your Name'" \
   -e "chezmoi_git_email='your.email@example.com'"
 ```
 
-The provisioner will install everything and apply dotfiles automatically.
+### Provision Ubuntu
+
+```bash
+git clone https://github.com/your-username/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+
+# Install Ansible
+sudo apt-get update
+sudo apt-get install -y ansible
+
+# Run provisioner
+ansible-playbook -i localhost, -c local provision.yml \
+  -e "chezmoi_git_name='Your Name'" \
+  -e "chezmoi_git_email='your.email@example.com'"
+```
+
+The provisioner detects your OS and installs everything automatically.
+
+### Platform Notes
+
+**macOS:**
+- Installs Homebrew (if not present) and uses it for package management
+- Sets zsh as default shell using `dscl`
+- Group ownership uses `staff` instead of user
+
+**Ubuntu:**
+- Uses `apt-get` for package management
+- Requires `sudo` for privilege escalation
+- Sets zsh as default shell using `usermod`
 
 ### Apply to Existing System
 
