@@ -145,15 +145,42 @@ sh -c "$(wget -qO- get.chezmoi.io)" -- init --apply your-username
 - Your GitHub username
 - Your name and email (for git configuration)
 
-### Setup
+### One-Command Provisioning
 
-1. Install Ansible (if not already installed):
+The fastest way to provision a fresh Ubuntu system:
+
+```bash
+# Run the provisioner with your information
+# Replace values in brackets with your own
+ansible-playbook -i localhost, -c local provision.yml \
+  -e "github_user=[your-github-username]" \
+  -e "chezmoi_name='[Your Full Name]'" \
+  -e "chezmoi_email='[your.email@example.com]'"
+```
+
+**Example:**
+```bash
+ansible-playbook -i localhost, -c local provision.yml \
+  -e "github_user=alice" \
+  -e "chezmoi_name='Alice Smith'" \
+  -e "chezmoi_email='alice@example.com'"
+```
+
+### Step-by-Step Setup
+
+1. **Clone the dotfiles repository** (if you haven't already):
+   ```bash
+   git clone https://github.com/your-username/dotfiles.git ~/dotfiles
+   cd ~/dotfiles
+   ```
+
+2. **Install Ansible** (if not already installed):
    ```bash
    sudo apt-get update
    sudo apt-get install -y ansible
    ```
 
-2. Run the playbook with your variables:
+3. **Run the provisioning playbook**:
    ```bash
    ansible-playbook -i localhost, -c local provision.yml \
      -e "github_user=your-username" \
@@ -161,17 +188,18 @@ sh -c "$(wget -qO- get.chezmoi.io)" -- init --apply your-username
      -e "chezmoi_email='your.email@example.com'"
    ```
 
-   Or with a specific user:
+   If running as a specific user (not the current user):
    ```bash
-   ansible-playbook -i localhost, -c local \
+   ansible-playbook -i localhost, -c local provision.yml \
      -e "ansible_user_id=username" \
      -e "github_user=your-username" \
      -e "chezmoi_name='Your Name'" \
-     -e "chezmoi_email='your.email@example.com'" \
-     provision.yml
+     -e "chezmoi_email='your.email@example.com'"
    ```
 
-The playbook will:
+### What the Provisioner Does
+
+The playbook will automatically:
 - Update package lists
 - Install git, zsh, tmux, vim, wget, curl, and fzf
 - Set zsh as the default shell
@@ -182,10 +210,11 @@ The playbook will:
   - zsh-completions
   - fzf-tab
 - Install powerlevel10k theme
-- Download and initialize chezmoi with your dotfiles (automatically clones the repository)
+- Download and initialize chezmoi with your dotfiles (automatically clones the repository from GitHub)
 - Apply all dotfiles to your system
+- Set proper file permissions
 
-After provisioning, your terminal will be fully configured with all plugins, theme, and dotfiles applied!
+After provisioning completes, your terminal will be fully configured with all plugins, theme, and dotfiles applied! Open a new terminal (or run `exec zsh`) to see the new prompt in action.
 
 ## Managing Dotfiles
 
