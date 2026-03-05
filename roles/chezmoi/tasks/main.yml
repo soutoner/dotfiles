@@ -16,9 +16,6 @@
     ~/.local/bin/chezmoi init --apply --source "{{ dotfiles_dir }}"
   become_user: "{{ user }}"
   become: yes
-  environment:
-    CHEZMOI_GIT_NAME: "{{ chezmoi_git_name | default('') }}"
-    CHEZMOI_GIT_EMAIL: "{{ chezmoi_git_email | default('') }}"
 
 - name: Clean up chezmoi installer
   file:

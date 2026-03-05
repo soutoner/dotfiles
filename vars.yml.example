@@ -1,6 +1,0 @@
-# Ansible variables for provisioning
-# Copy this to vars.yml and fill in your values, then run:
-# ansible-playbook -i localhost, -c local provision.yml -e @vars.yml
-
-chezmoi_git_name: "Your Name"
-chezmoi_git_email: "your.email@example.com"

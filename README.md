@@ -13,15 +13,12 @@ cd ~/dotfiles
 # Install Ansible
 brew install ansible
 
-# Option 1: Using environment variables
+# Set your git configuration
 export CHEZMOI_GIT_NAME="Your Name"
 export CHEZMOI_GIT_EMAIL="your.email@example.com"
-ansible-playbook -i localhost, -c local provision.yml
 
-# Option 2: Using vars file
-cp vars.yml.example vars.yml
-# Edit vars.yml with your name and email
-ansible-playbook -i localhost, -c local provision.yml -e @vars.yml
+# Run provisioner
+ansible-playbook -i localhost, -c local provision.yml
 ```
 
 ### Provision Ubuntu
@@ -34,15 +31,12 @@ cd ~/dotfiles
 sudo apt-get update
 sudo apt-get install -y ansible
 
-# Option 1: Using environment variables
+# Set your git configuration
 export CHEZMOI_GIT_NAME="Your Name"
 export CHEZMOI_GIT_EMAIL="your.email@example.com"
-ansible-playbook -i localhost, -c local provision.yml
 
-# Option 2: Using vars file
-cp vars.yml.example vars.yml
-# Edit vars.yml with your name and email
-ansible-playbook -i localhost, -c local provision.yml -e @vars.yml
+# Run provisioner
+ansible-playbook -i localhost, -c local provision.yml
 ```
 
 The provisioner detects your OS and installs everything automatically.
@@ -136,42 +130,25 @@ Using XDG Base Directory Specification:
 
 ## Environment Variables
 
-There are two different contexts where variables are used:
+Chezmoi reads the following OS environment variables for git configuration:
 
-### 1. During Provisioning (Ansible)
+- `CHEZMOI_GIT_NAME` - Your name for git config
+- `CHEZMOI_GIT_EMAIL` - Your email for git config
 
-When running the provisioner with Ansible, provide git configuration via:
+Set these variables before provisioning or applying dotfiles:
 
-**Option A: Environment variables**
 ```bash
 export CHEZMOI_GIT_NAME="Your Name"
 export CHEZMOI_GIT_EMAIL="your.email@example.com"
 ansible-playbook -i localhost, -c local provision.yml
 ```
 
-**Option B: Ansible vars file** (recommended)
+Or apply chezmoi directly:
 ```bash
-cp vars.yml.example vars.yml
-# Edit vars.yml with your values
-ansible-playbook -i localhost, -c local provision.yml -e @vars.yml
-```
-
-### 2. After Provisioning (Chezmoi)
-
-After provisioning, use chezmoi's native `.env` file support to manage git configuration:
-
-```bash
-cp .env.example .env
-# Edit .env with your values
+export CHEZMOI_GIT_NAME="Your Name"
+export CHEZMOI_GIT_EMAIL="your.email@example.com"
 chezmoi apply
 ```
-
-Chezmoi reads the `.env` file and uses variables in templates via `{{ env "VARIABLE_NAME" }}`.
-
-### Variables Reference
-
-- `CHEZMOI_GIT_NAME` - Your name for git config
-- `CHEZMOI_GIT_EMAIL` - Your email for git config
 
 ## Repository Structure
 
@@ -200,9 +177,7 @@ dotfiles/
 │       ├── tasks/main.yml                  # Install & initialize chezmoi
 │       └── vars/main.yml
 ├── .chezmoi.yaml.tmpl                      # Chezmoi config with templates
-├── .env.example                            # Example environment variables for chezmoi
 ├── .gitignore
-├── vars.yml.example                        # Example Ansible variables for provisioning
 ├── provision.yml                           # Main provisioning playbook
 └── README.md
 ```
