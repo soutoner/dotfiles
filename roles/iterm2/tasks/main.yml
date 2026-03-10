@@ -1,0 +1,21 @@
+---
+- name: (macOS) Check if iTerm2 is installed
+  stat:
+    path: /Applications/iTerm.app
+  register: iterm2_installed
+  when: ansible_facts['os_family'] == "Darwin"
+
+- name: (macOS) Install iTerm2
+  homebrew_cask:
+    name: iterm2
+    state: present
+  when: ansible_facts['os_family'] == "Darwin" and not iterm2_installed.stat.exists
+
+- name: (macOS) Install Catppuccin theme for iTerm2
+  shell: |
+    curl -L {{ catppuccin_iterm2_install_url }} -o ~/Downloads/Catppuccin-Mocha.itermcolors
+    open ~/Downloads/Catppuccin-Mocha.itermcolors
+    sleep 2
+    rm ~/Downloads/Catppuccin-Mocha.itermcolors
+  become_user: "{{ user }}"
+  when: ansible_facts['os_family'] == "Darwin"

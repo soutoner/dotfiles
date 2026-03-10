@@ -1,6 +1,6 @@
 # Dotfiles
 
-Minimal, modern dotfiles for fish shell, tmux, and git using chezmoi. Works on macOS and Ubuntu/WSL2.
+Minimal, modern dotfiles for zsh, tmux, and git using chezmoi. Works on macOS and Ubuntu/WSL2.
 
 ## Quick Start
 
@@ -33,24 +33,22 @@ Use the `-K` flag to be prompted for your sudo password.
 Install specific roles using tags:
 
 ```bash
-# Install only fish and fzf
-ansible-playbook -i localhost, -c local provision.yml --tags=fish,fzf
+ansible-playbook -i localhost, -c local provision.yml --tags=zsh,fzf
 
-# Skip tmux installation
-ansible-playbook -i localhost, -c local provision.yml --skip-tags=tmux
+# Or skip specific roles
+ansible-playbook -i localhost, -c local provision.yml --skip-tags=gnome-terminal
 ```
 
-Available tags: `packages`, `fish`, `fzf`, `tmux`, `gnome-terminal`, `chezmoi`
-
-## What Gets Installed
-
-- **Fish** shell with built-in syntax highlighting, autosuggestions, and completions
-- **FZF** built from source for fuzzy finding and history search
-- **Git** configuration (XDG-compliant)
-- **Tmux** configuration with plugin manager (tpm)
-- **Chezmoi** for dotfiles management
-
 ## Post-Installation Steps
+
+### iTerm2 Theme (macOS)
+
+The Catppuccin Mocha theme is automatically downloaded and installed via the `iterm2` role. To apply it:
+
+1. Open iTerm2 → Settings → Profiles → Colors
+2. Click the "Color Presets" dropdown and select "Catppuccin Mocha"
+
+You can skip this role during provisioning with `--skip-tags=iterm2` if you prefer not to install the theme.
 
 ### GNOME Terminal Theme (Ubuntu)
 
@@ -76,14 +74,6 @@ Press prefix + `I` to install plugins:
 - **macOS**: `` ` `` + `I`
 - **Linux**: `Ctrl-Space` + `I`
 
-### Set Fish as Default Shell
-
-If your system doesn't set fish as your default shell during provisioning, set it manually:
-
-```bash
-chsh -s $(which fish)
-```
-
 ## Managing Dotfiles
 
 ```bash
@@ -92,13 +82,6 @@ chezmoi edit FILE   # Edit a dotfile
 chezmoi diff        # See what would change
 chezmoi apply       # Apply changes
 ```
-
-## File Organization
-
-- `~/.config/fish/config.fish` - Fish shell configuration (XDG-compliant)
-- `~/.config/fish/functions/` - Fish functions
-- `~/.config/git/config` - Git configuration (XDG-compliant)
-- `~/.config/tmux/tmux.conf` - Tmux configuration (XDG-compliant)
 
 ## Environment Variables
 
@@ -113,19 +96,9 @@ export CHEZMOI_GIT_EMAIL="your.email@example.com"
 chezmoi apply
 ```
 
-## Why Fish?
-
-Fish shell is a user-friendly shell with modern features out-of-the-box:
-
-- **Built-in syntax highlighting** - No plugins needed
-- **Built-in autosuggestions** - Smart history-based suggestions
-- **Built-in completions** - Powerful and easy to configure
-- **XDG compliant** - Automatically uses `~/.config/fish/`
-- **Simple configuration** - Function-based, easy to understand
-
 ## Links
 
-- [Fish Shell](https://fishshell.com/)
+- [Zsh](https://www.zsh.org/)
 - [FZF](https://github.com/junegunn/fzf)
 - [Chezmoi](https://www.chezmoi.io/)
 - [Tmux](https://github.com/tmux/tmux)
