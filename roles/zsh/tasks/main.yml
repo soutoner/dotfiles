@@ -10,6 +10,7 @@
     name: zsh
     state: present
     update_cache: yes
+  become: yes
   when: ansible_facts['os_family'] == 'Debian'
 
 - name: Get zsh shell path
