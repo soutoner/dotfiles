@@ -1,0 +1,25 @@
+---
+- name: Install zsh via Homebrew (macOS)
+  homebrew:
+    name: zsh
+    state: present
+  when: ansible_facts['os_family'] == 'Darwin'
+
+- name: Install zsh via apt (Ubuntu/Debian)
+  apt:
+    name: zsh
+    state: present
+    update_cache: yes
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Get zsh shell path
+  command: which zsh
+  register: zsh_path
+  changed_when: false
+
+- name: Set zsh as default shell (using Ansible user module)
+  user:
+    name: "{{ user }}"
+    shell: "{{ zsh_path.stdout }}"
+  become: yes
+  when: ansible_facts['user_shell'] != zsh_path.stdout

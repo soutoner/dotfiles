@@ -3,4 +3,4 @@
   shell: |
     curl -L {{ catppuccin_gnome_terminal_install_url }} | python3 -
   become_user: "{{ user }}"
-  when: ansible_os_family == "Debian"
+  when: ansible_facts['os_family'] == "Debian"

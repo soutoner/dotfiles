@@ -1,0 +1,36 @@
+# Export PATH
+export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$PATH"
+
+# ZSH Configuration
+# Source oh-my-zsh
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME="robbyrussell"
+
+# Just remind me to update when it's time
+zstyle ':omz:update' mode reminder
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Plugins
+# Note: These plugins will be installed via Ansible during provisioning
+# - zsh-syntax-highlighting: Syntax highlighting for commands
+# - zsh-completions: Additional completion definitions
+# - zsh-autosuggestions: Suggests completions based on history
+plugins=(
+    git
+    zsh-syntax-highlighting
+    zsh-completions
+    zsh-autosuggestions
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# Load fzf key bindings and completions AFTER oh-my-zsh
+# This ensures fzf keybindings are not overridden by oh-my-zsh
+if command -v fzf &> /dev/null; then
+  source <(fzf --zsh)
+fi

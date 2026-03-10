@@ -2,21 +2,25 @@
 - name: Provision system with dotfiles
   hosts: localhost
   gather_facts: yes
-  
+
   vars:
     # Get the actual user (handles both normal and sudo execution)
-    user: "{{ ansible_user_id if ansible_user_id != 'root' else ansible_env.SUDO_USER | default(ansible_user_id) }}"
-    home_dir: "{{ ansible_user_dir if ansible_user_id != 'root' else ansible_env.HOME | default('/home/' + (ansible_env.SUDO_USER | default(ansible_user_id))) }}"
+    user: "{{ ansible_facts['user_id'] if ansible_facts['user_id'] != 'root' else ansible_facts['env'].SUDO_USER | default(ansible_facts['user_id']) }}"
+    home_dir: "{{ ansible_facts['user_dir'] if ansible_facts['user_id'] != 'root' else ansible_facts['env'].HOME | default('/home/' + (ansible_facts['env'].SUDO_USER | default(ansible_facts['user_id']))) }}"
     dotfiles_dir: "{{ playbook_dir }}"
-    group: "{{ 'staff' if ansible_os_family == 'Darwin' else user }}"
+    group: "{{ 'staff' if ansible_facts['os_family'] == 'Darwin' else user }}"
 
   roles:
     - role: packages
       tags: [packages]
-    - role: fish
-      tags: [fish]
+    - role: zsh
+      tags: [zsh]
     - role: fzf
       tags: [fzf]
+    - role: opencode
+      tags: [opencode]
+    - role: oh-my-zsh
+      tags: [oh-my-zsh]
     - role: tmux
       tags: [tmux]
     - role: gnome-terminal

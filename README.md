@@ -5,16 +5,18 @@ Minimal, modern dotfiles for fish shell, tmux, and git using chezmoi. Works on m
 ## Quick Start
 
 ### macOS
+
 ```bash
 git clone https://github.com/your-username/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 brew install ansible
-export CHEZMOI_GIT_NAME="Your Name"
-export CHEZMOI_GIT_EMAIL="your.email@example.com"
-ansible-playbook -i localhost, -c local provision.yml
+ansible-playbook -i localhost, -c local -K provision.yml
 ```
 
+Use the `-K` flag to be prompted for your sudo password.
+
 ### Ubuntu / WSL2
+
 ```bash
 git clone https://github.com/your-username/dotfiles.git ~/dotfiles
 cd ~/dotfiles
@@ -24,11 +26,12 @@ export CHEZMOI_GIT_EMAIL="your.email@example.com"
 ansible-playbook -i localhost, -c local -K provision.yml
 ```
 
-Use the `-K` flag on Ubuntu to be prompted for your sudo password.
+Use the `-K` flag to be prompted for your sudo password.
 
 ### Selective Installation
 
 Install specific roles using tags:
+
 ```bash
 # Install only fish and fzf
 ansible-playbook -i localhost, -c local provision.yml --tags=fish,fzf
@@ -50,7 +53,9 @@ Available tags: `packages`, `fish`, `fzf`, `tmux`, `gnome-terminal`, `chezmoi`
 ## Post-Installation Steps
 
 ### GNOME Terminal Theme (Ubuntu)
+
 The Catppuccin Mocha theme is automatically installed via the `gnome-terminal` role. To apply it:
+
 1. Open GNOME Terminal → Edit → Preferences (or Ctrl+,)
 2. Go to Profiles tab → Select profile → Appearance section
 3. Choose "Catppuccin Mocha" from the Color scheme dropdown
@@ -59,17 +64,22 @@ The Catppuccin Mocha theme is automatically installed via the `gnome-terminal` r
 You can skip this role during provisioning with `--skip-tags=gnome-terminal` if you prefer not to install the theme.
 
 ### Tmux Plugins
+
 Start tmux and install plugins:
+
 ```bash
 tmux
 ```
+
 Press prefix + `I` to install plugins:
+
 - **macOS**: `` ` `` + `I`
 - **Linux**: `Ctrl-Space` + `I`
 
 ### Set Fish as Default Shell
 
 If your system doesn't set fish as your default shell during provisioning, set it manually:
+
 ```bash
 chsh -s $(which fish)
 ```
@@ -93,6 +103,7 @@ chezmoi apply       # Apply changes
 ## Environment Variables
 
 Set before provisioning or applying:
+
 - `CHEZMOI_GIT_NAME` - Your name for git config
 - `CHEZMOI_GIT_EMAIL` - Your email for git config
 
@@ -105,6 +116,7 @@ chezmoi apply
 ## Why Fish?
 
 Fish shell is a user-friendly shell with modern features out-of-the-box:
+
 - **Built-in syntax highlighting** - No plugins needed
 - **Built-in autosuggestions** - Smart history-based suggestions
 - **Built-in completions** - Powerful and easy to configure
@@ -117,4 +129,3 @@ Fish shell is a user-friendly shell with modern features out-of-the-box:
 - [FZF](https://github.com/junegunn/fzf)
 - [Chezmoi](https://www.chezmoi.io/)
 - [Tmux](https://github.com/tmux/tmux)
-

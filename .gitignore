@@ -8,9 +8,6 @@
 .chezmoi.yaml
 chezmoi.json
 
-# IDE
-.vscode/
-
 # Ansible
 *.retry
 .ansible/
