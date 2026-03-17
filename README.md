@@ -83,6 +83,15 @@ chezmoi diff        # See what would change
 chezmoi apply       # Apply changes
 ```
 
+### Local Tool Configurations
+
+The file `~/.zshrc.local` is managed by Ansible (not chezmoi) and is designed for tool-managed configurations. This prevents chezmoi sync conflicts when tools like nvm, sdkman, pyenv, or other package managers modify your shell configuration.
+
+- **Location**: `~/.zshrc.local`
+- **Management**: Created by Ansible, safe to edit locally
+- **Purpose**: Add tool-specific shell configurations here instead of `.zshrc`
+- **Behavior**: Not tracked by git or chezmoi, preserves local changes
+
 ## Environment Variables
 
 Set before provisioning or applying:

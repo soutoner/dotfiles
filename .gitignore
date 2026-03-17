@@ -8,6 +8,9 @@
 .chezmoi.yaml
 chezmoi.json
 
+# Local dotfiles managed by Ansible (not chezmoi)
+home/dot_zshrc.local
+
 # Ansible
 *.retry
 .ansible/

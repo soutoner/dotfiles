@@ -41,3 +41,8 @@ if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
   # Try to attach to an existing session or create a new one
   tmux attach-session -t main || tmux new-session -s main
 fi
+
+# Source local customizations (for tool-managed configurations)
+# Tools like nvm, sdkman, etc. should add their configuration to ~/.zshrc.local
+# NOTE: ~/.zshrc.local is created and managed by Ansible (not chezmoi)
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local

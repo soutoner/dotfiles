@@ -24,3 +24,29 @@
     shell: "{{ zsh_path.stdout }}"
   become: yes
   when: ansible_facts['user_shell'] != zsh_path.stdout
+
+- name: Create .zshrc.local if it doesn't exist
+  copy:
+    dest: "{{ home_dir }}/.zshrc.local"
+    content: |
+      # ~/.zshrc.local
+      #
+      # This file is for tool-managed shell configurations that are automatically
+      # added by package managers and development tools during installation.
+      #
+      # PURPOSE:
+      # - Keeps your main .zshrc clean and version-controlled without conflicts
+      # - Allows tools like nvm, sdkman, rvm, pyenv, etc. to modify shell config freely
+      # - Prevents chezmoi from complaining about modified files
+      #
+      # USAGE:
+      # - When installing new tools that want to modify .zshrc, direct them here instead
+      # - Manually move any tool-added lines from .zshrc to this file
+      # - This file is sourced at the end of .zshrc automatically
+      #
+      # NOTE: This file is managed by Ansible but can be safely edited locally.
+      # Add your tool configurations below this comment block.
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: "0644"
+    force: no
