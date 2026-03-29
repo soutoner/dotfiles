@@ -1,59 +1,15 @@
 ---
 - name: Check if claude is already installed
-  shell: |
-    . {{ home_dir }}/.nvm/nvm.sh
-    which claude
-  args:
-    executable: /bin/bash
-  environment:
-    HOME: "{{ home_dir }}"
+  shell: which claude
   register: claude_check
   failed_when: false
   changed_when: false
 
-- name: Create temporary directory for claude installation
-  tempfile:
-    state: directory
-    suffix: _claude
-  register: claude_temp_dir
-  when: claude_check.rc != 0
-
-- name: Download Claude Code install script
-  get_url:
-    url: "{{ claude_installer_url }}"
-    dest: "{{ claude_temp_dir.path }}/install.sh"
-    mode: '0755'
-  when: claude_check.rc != 0
-
 - name: Install Claude Code
-  shell: bash {{ claude_temp_dir.path }}/install.sh
+  shell: curl -fsSL {{ claude_installer_url }} | bash
   args:
     executable: /bin/bash
   environment:
     HOME: "{{ home_dir }}"
-    NVM_DIR: "{{ home_dir }}/.nvm"
   become_user: "{{ user }}"
   when: claude_check.rc != 0
-
-- name: Clean up temporary directory
-  file:
-    path: "{{ claude_temp_dir.path }}"
-    state: absent
-  when: claude_temp_dir is defined and claude_temp_dir.path is defined
-
-- name: Verify Claude Code installation
-  shell: |
-    . {{ home_dir }}/.nvm/nvm.sh
-    claude --version
-  args:
-    executable: /bin/bash
-  environment:
-    HOME: "{{ home_dir }}"
-  register: claude_version
-  changed_when: false
-  failed_when: false
-
-- name: Display Claude Code version
-  debug:
-    msg: "Claude Code installed: {{ claude_version.stdout }}"
-  when: claude_version.rc == 0
