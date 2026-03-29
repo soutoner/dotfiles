@@ -1,0 +1,148 @@
+---
+# ── Content install (agents / rules / commands / skills) ─────────────────────
+# Skipped entirely if ~/.claude already exists to avoid overwriting user config.
+
+- name: Check if ~/.claude already exists
+  stat:
+    path: "{{ home_dir }}/.claude"
+  register: ecc_claude_dir
+
+- name: Inform user that ~/.claude exists — skipping content installation
+  debug:
+    msg: >
+      ~/.claude already exists. Skipping everything-claude-code content
+      installation (agents, commands, rules, skills) to avoid overwriting your
+      existing configuration. Remove or rename ~/.claude first if you want this
+      role to reinstall content.
+  when: ecc_claude_dir.stat.exists
+
+- name: Install everything-claude-code content
+  when: not ecc_claude_dir.stat.exists
+  block:
+
+    - name: Checkout everything-claude-code repository
+      git:
+        repo: "{{ ecc_repo_url }}"
+        dest: "{{ ecc_clone_dest }}"
+        update: true
+        force: false
+
+    - name: Ensure ~/.claude subdirectories exist
+      file:
+        path: "{{ home_dir }}/.claude/{{ item }}"
+        state: directory
+        owner: "{{ user }}"
+        mode: '0755'
+      loop:
+        - agents
+        - commands
+        - rules
+        - skills
+
+    - name: Install agents
+      copy:
+        src: "{{ ecc_clone_dest }}/agents/"
+        dest: "{{ home_dir }}/.claude/agents/"
+        owner: "{{ user }}"
+        mode: '0644'
+      when: ecc_install_agents
+
+    - name: Install commands
+      copy:
+        src: "{{ ecc_clone_dest }}/commands/"
+        dest: "{{ home_dir }}/.claude/commands/"
+        owner: "{{ user }}"
+        mode: '0644'
+      when: ecc_install_commands
+
+    - name: Install common rules
+      copy:
+        src: "{{ ecc_clone_dest }}/rules/common/"
+        dest: "{{ home_dir }}/.claude/rules/common/"
+        owner: "{{ user }}"
+        mode: '0644'
+      when: ecc_install_rules_common
+
+    - name: Install language-specific rules
+      copy:
+        src: "{{ ecc_clone_dest }}/rules/{{ item }}/"
+        dest: "{{ home_dir }}/.claude/rules/{{ item }}/"
+        owner: "{{ user }}"
+        mode: '0644'
+      loop: "{{ ecc_install_rules_languages }}"
+      when: ecc_install_rules_languages | length > 0
+
+    - name: Install selected skills
+      copy:
+        src: "{{ ecc_clone_dest }}/skills/{{ item }}/"
+        dest: "{{ home_dir }}/.claude/skills/{{ item }}/"
+        owner: "{{ user }}"
+        mode: '0644'
+      loop: "{{ ecc_install_skills }}"
+      when: ecc_install_skills | length > 0
+
+# ── Token optimization (always runs, safe merge) ──────────────────────────────
+
+- name: Analyse settings.json for safe merge
+  command: >
+    python3 {{ role_path }}/files/merge_settings.py
+    {{ home_dir }}/.claude/settings.json
+  register: ecc_analysis_raw
+  changed_when: false
+  when: ecc_token_optimization
+
+- name: Parse merge analysis result
+  set_fact:
+    ecc_settings: "{{ ecc_analysis_raw.stdout | from_json }}"
+  when:
+    - ecc_token_optimization
+    - ecc_analysis_raw.stdout | default('') != ''
+
+- name: Abort — could not parse settings.json
+  debug:
+    msg: >
+      Could not parse ~/.claude/settings.json:
+      {{ ecc_settings.details | join(', ') }}
+      Token optimization skipped. Fix the JSON and re-run.
+  when:
+    - ecc_token_optimization
+    - ecc_settings is defined
+    - ecc_settings.status == 'parse_error'
+
+- name: Prompt user about conflicting values
+  pause:
+    prompt: |
+
+      The following keys in ~/.claude/settings.json would be overwritten:
+      {% for detail in ecc_settings.details %}
+        • {{ detail }}
+      {% endfor %}
+
+      Proceed and overwrite? [yes/no]
+  register: ecc_conflict_response
+  when:
+    - ecc_token_optimization
+    - ecc_settings is defined
+    - ecc_settings.status == 'conflict'
+
+- name: Inform user that token optimization was skipped
+  debug:
+    msg: "Token optimization skipped — existing ~/.claude/settings.json values preserved."
+  when:
+    - ecc_token_optimization
+    - ecc_settings is defined
+    - ecc_settings.status == 'conflict'
+    - (ecc_conflict_response.user_input | default('no')) | lower not in ['yes', 'y']
+
+- name: Write merged settings.json
+  copy:
+    content: "{{ ecc_settings.merged | to_nice_json }}\n"
+    dest: "{{ home_dir }}/.claude/settings.json"
+    owner: "{{ user }}"
+    mode: '0600'
+  when:
+    - ecc_token_optimization
+    - ecc_settings is defined
+    - ecc_settings.status in ['new', 'ok'] or
+      (ecc_settings.status == 'conflict' and
+       (ecc_conflict_response.user_input | default('no')) | lower in ['yes', 'y'])

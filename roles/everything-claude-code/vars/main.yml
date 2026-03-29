@@ -1,0 +1,24 @@
+---
+ecc_repo_url: "https://github.com/affaan-m/everything-claude-code.git"
+ecc_clone_dest: "/tmp/everything-claude-code"
+
+# Set to true to install all agent definitions into ~/.claude/agents/
+ecc_install_agents: true
+
+# Set to true to install all slash commands into ~/.claude/commands/
+ecc_install_commands: true
+
+# Set to true to install language-agnostic rules into ~/.claude/rules/common/
+ecc_install_rules_common: true
+
+# List of language-specific rule directories to install (e.g. typescript, python, golang, swift, php)
+# Each entry copies rules/<lang>/ into ~/.claude/rules/<lang>/
+ecc_install_rules_languages: []
+
+# List of skill directory names to install from skills/ into ~/.claude/skills/
+# Example: [search-first, tdd-workflow, golang-patterns]
+ecc_install_skills: []
+
+# Token optimization: write ~/.claude/settings.json with model and env vars.
+# If a settings.json already exists it will be backed up before overwriting.
+ecc_token_optimization: true

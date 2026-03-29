@@ -1,0 +1,69 @@
+---
+- name: Check if nvm is already installed
+  stat:
+    path: "{{ home_dir }}/.nvm/nvm.sh"
+  register: nvm_installed
+
+- name: Download nvm install script
+  get_url:
+    url: "https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh"
+    dest: "/tmp/nvm-install.sh"
+    mode: '0755'
+  when: not nvm_installed.stat.exists
+
+- name: Install nvm
+  shell: bash /tmp/nvm-install.sh
+  args:
+    executable: /bin/bash
+  environment:
+    HOME: "{{ home_dir }}"
+  become_user: "{{ user }}"
+  when: not nvm_installed.stat.exists
+
+- name: Clean up nvm installer
+  file:
+    path: "/tmp/nvm-install.sh"
+    state: absent
+
+- name: Check if Node.js LTS is already installed via nvm
+  shell: |
+    . {{ home_dir }}/.nvm/nvm.sh
+    nvm ls --no-colors | grep -q 'lts'
+  args:
+    executable: /bin/bash
+  environment:
+    HOME: "{{ home_dir }}"
+  become_user: "{{ user }}"
+  register: node_lts_check
+  failed_when: false
+  changed_when: false
+
+- name: Install Node.js LTS via nvm
+  shell: |
+    . {{ home_dir }}/.nvm/nvm.sh
+    nvm install --lts
+    nvm alias default lts/*
+  args:
+    executable: /bin/bash
+  environment:
+    HOME: "{{ home_dir }}"
+  become_user: "{{ user }}"
+  when: node_lts_check.rc != 0
+
+- name: Verify Node.js installation
+  shell: |
+    . {{ home_dir }}/.nvm/nvm.sh
+    node --version
+  args:
+    executable: /bin/bash
+  environment:
+    HOME: "{{ home_dir }}"
+  become_user: "{{ user }}"
+  register: node_version
+  changed_when: false
+  failed_when: false
+
+- name: Display Node.js version
+  debug:
+    msg: "Node.js installed: {{ node_version.stdout }}"
+  when: node_version.rc == 0

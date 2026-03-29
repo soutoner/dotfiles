@@ -13,12 +13,20 @@
   roles:
     - role: packages
       tags: [packages]
+    - role: nvm
+      tags: [nvm]
     - role: zsh
       tags: [zsh]
     - role: fzf
       tags: [fzf]
     - role: opencode
       tags: [opencode]
+    - role: claude
+      tags: [claude]
+    - role: rtk
+      tags: [rtk]
+    - role: everything-claude-code
+      tags: [everything-claude-code, ecc]
     - role: oh-my-zsh
       tags: [oh-my-zsh]
     - role: tmux

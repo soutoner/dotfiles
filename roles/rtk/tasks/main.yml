@@ -1,0 +1,87 @@
+---
+# ── Install RTK binary ────────────────────────────────────────────────────────
+
+- name: Check if rtk is already installed
+  stat:
+    path: "{{ rtk_bin }}"
+  register: rtk_installed
+
+- name: Ensure ~/.local/bin exists
+  file:
+    path: "{{ home_dir }}/.local/bin"
+    state: directory
+    owner: "{{ user }}"
+    mode: '0755'
+  when: not rtk_installed.stat.exists
+
+- name: Download RTK install script
+  get_url:
+    url: "{{ rtk_installer_url }}"
+    dest: "/tmp/rtk-install.sh"
+    mode: '0755'
+  when: not rtk_installed.stat.exists
+
+- name: Install RTK
+  shell: bash /tmp/rtk-install.sh
+  args:
+    executable: /bin/bash
+  environment:
+    HOME: "{{ home_dir }}"
+  become_user: "{{ user }}"
+  when: not rtk_installed.stat.exists
+
+- name: Clean up RTK installer
+  file:
+    path: "/tmp/rtk-install.sh"
+    state: absent
+
+- name: Verify RTK installation
+  command: "{{ rtk_bin }} --version"
+  register: rtk_version
+  changed_when: false
+  failed_when: false
+
+- name: Display RTK version
+  debug:
+    msg: "RTK installed: {{ rtk_version.stdout }}"
+  when: rtk_version.rc == 0
+
+# ── Configure RTK hook for Claude Code sessions ───────────────────────────────
+
+- name: Check if ~/.claude exists (required for rtk init)
+  stat:
+    path: "{{ home_dir }}/.claude"
+  register: rtk_claude_dir
+
+- name: Inform user that ~/.claude does not exist — skipping rtk init
+  debug:
+    msg: >
+      ~/.claude does not exist. Skipping 'rtk init -g' hook configuration.
+      Re-run the rtk role after Claude Code has been initialised at least once.
+  when: not rtk_claude_dir.stat.exists
+
+- name: Check if RTK hook is already registered in settings.json
+  shell: >
+    grep -q 'rtk' {{ home_dir }}/.claude/settings.json 2>/dev/null && echo yes || echo no
+  register: rtk_hook_check
+  changed_when: false
+  failed_when: false
+  when: rtk_claude_dir.stat.exists
+
+- name: Configure RTK PreToolUse hook for Claude Code (non-interactive)
+  command: "{{ rtk_bin }} init -g --auto-patch"
+  environment:
+    HOME: "{{ home_dir }}"
+  become_user: "{{ user }}"
+  when:
+    - rtk_claude_dir.stat.exists
+    - rtk_hook_check.stdout is defined
+    - rtk_hook_check.stdout == 'no'
+  register: rtk_init
+
+- name: Display rtk init result
+  debug:
+    msg: "{{ rtk_init.stdout }}"
+  when:
+    - rtk_init is defined
+    - rtk_init.changed
