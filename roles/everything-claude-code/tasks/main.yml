@@ -13,7 +13,7 @@
     repo: "{{ ecc_repo_url }}"
     dest: "{{ ecc_clone_dest }}"
     update: true
-    force: false
+    force: true
   become_user: "{{ user }}"
 
 - name: Install Node dependencies
