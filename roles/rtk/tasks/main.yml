@@ -85,3 +85,40 @@
   when:
     - rtk_init is defined
     - rtk_init.changed
+
+# ── Configure RTK plugin for OpenCode ─────────────────────────────────────────
+
+- name: Check if ~/.config/opencode exists (required for rtk init --opencode)
+  stat:
+    path: "{{ home_dir }}/.config/opencode"
+  register: rtk_opencode_dir
+
+- name: Inform user that ~/.config/opencode does not exist — skipping rtk opencode plugin
+  debug:
+    msg: >
+      ~/.config/opencode does not exist. Skipping 'rtk init -g --opencode' plugin installation.
+      Re-run the rtk role after OpenCode has been initialised at least once.
+  when: not rtk_opencode_dir.stat.exists
+
+- name: Check if RTK OpenCode plugin is already installed
+  stat:
+    path: "{{ home_dir }}/.config/opencode/plugins/rtk.ts"
+  register: rtk_opencode_plugin
+  when: rtk_opencode_dir.stat.exists
+
+- name: Install RTK OpenCode plugin
+  command: "{{ rtk_bin }} init -g --opencode"
+  environment:
+    HOME: "{{ home_dir }}"
+  become_user: "{{ user }}"
+  when:
+    - rtk_opencode_dir.stat.exists
+    - not rtk_opencode_plugin.stat.exists
+  register: rtk_opencode_init
+
+- name: Display rtk opencode init result
+  debug:
+    msg: "{{ rtk_opencode_init.stdout }}"
+  when:
+    - rtk_opencode_init is defined
+    - rtk_opencode_init.changed
