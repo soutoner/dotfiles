@@ -28,7 +28,28 @@ ansible-playbook -i localhost, -c local -K provision.yml
 
 Use the `-K` flag to be prompted for your sudo password.
 
-### Selective Installation
+### Modular Playbooks
+
+You can run specific playbooks instead of the full provision:
+
+```bash
+# Run everything (default)
+ansible-playbook -i localhost, -c local -K provision.yml
+
+# Basic system packages and config management (packages, chezmoi)
+ansible-playbook -i localhost, -c local -K basic-setup.yml
+
+# Terminal configuration (zsh, oh-my-zsh, tmux, fzf)
+ansible-playbook -i localhost, -c local -K terminal.yml
+
+# Terminal emulator themes (iterm2, gnome-terminal)
+ansible-playbook -i localhost, -c local -K terminal-emulators.yml
+
+# AI coding agents (opencode, claude, rtk)
+ansible-playbook -i localhost, -c local -K coding-agents.yml
+```
+
+### Selective Installation with Tags
 
 Install specific roles using tags:
 

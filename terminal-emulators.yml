@@ -1,5 +1,5 @@
 ---
-- name: Provision system with dotfiles
+- name: Terminal emulator themes
   hosts: localhost
   gather_facts: yes
 
@@ -11,24 +11,6 @@
     group: "{{ 'staff' if ansible_facts['os_family'] == 'Darwin' else user }}"
 
   roles:
-    - role: packages
-      tags: [packages]
-    - role: chezmoi
-      tags: [chezmoi]
-    - role: zsh
-      tags: [zsh]
-    - role: fzf
-      tags: [fzf]
-    - role: opencode
-      tags: [opencode]
-    - role: claude
-      tags: [claude]
-    - role: rtk
-      tags: [rtk]
-    - role: oh-my-zsh
-      tags: [oh-my-zsh]
-    - role: tmux
-      tags: [tmux]
     - role: gnome-terminal
       tags: [gnome-terminal]
     - role: iterm2

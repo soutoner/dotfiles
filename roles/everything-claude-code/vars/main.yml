@@ -1,9 +1,0 @@
----
-ecc_repo_url: "https://github.com/soutoner/everything-claude-code.git"
-
-# Persistent clone location — must survive reboots so hooks can reference it at runtime.
-ecc_clone_dest: "{{ home_dir }}/.local/share/everything-claude-code"
-
-# Token optimization: write ~/.claude/settings.json with model and env vars.
-# If a settings.json already exists the script will prompt before overwriting conflicting keys.
-ecc_token_optimization: true
