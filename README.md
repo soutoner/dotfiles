@@ -83,6 +83,16 @@ chezmoi diff        # See what would change
 chezmoi apply       # Apply changes
 ```
 
+### AI Coding Assistant Configuration
+
+The `~/.claude/` directory contains global configuration for AI coding assistants:
+
+- **AGENTS.md** - Custom agent behaviors (critical thinking, commit standards, code quality preferences)
+
+This file is synced via chezmoi and applies globally across all projects and sessions.
+
+**Important**: After syncing, manually add `@AGENTS.md` to your `~/.claude/CLAUDE.md` file to enable the custom behaviors. Do not track CLAUDE.md in git as tools may modify it.
+
 ### Local Tool Configurations
 
 The file `~/.zshrc.local` is managed by Ansible (not chezmoi) and is designed for tool-managed configurations. This prevents chezmoi sync conflicts when tools like nvm, sdkman, pyenv, or other package managers modify your shell configuration.
