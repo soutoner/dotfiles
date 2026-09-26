@@ -17,19 +17,25 @@
   failed_when: false
   changed_when: false
 
-- name: Install build dependencies (Ubuntu) if not present
+- name: (Ubuntu) Install git build dependency if missing
   apt:
-    name:
-      - "{{ item }}"
+    name: git
     state: present
     update_cache: yes
-  loop:
-    - git
-    - golang-go
   when:
     - fzf_check.rc != 0
     - ansible_facts['os_family'] == "Debian"
-    - (item == "git" and git_check.rc != 0) or (item == "golang-go" and go_check.rc != 0)
+    - git_check.rc != 0
+
+- name: (Ubuntu) Install golang build dependency if missing
+  apt:
+    name: golang-go
+    state: present
+    update_cache: yes
+  when:
+    - fzf_check.rc != 0
+    - ansible_facts['os_family'] == "Debian"
+    - go_check.rc != 0
 
 - name: Ensure ~/.local/src directory exists
   file:

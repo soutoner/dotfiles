@@ -36,7 +36,7 @@
       #
       # PURPOSE:
       # - Keeps your main .zshrc clean and version-controlled without conflicts
-      # - Allows tools like nvm, sdkman, rvm, pyenv, etc. to modify shell config freely
+      # - Allows tools like sdkman, rvm, etc. to modify shell config freely
       # - Prevents chezmoi from complaining about modified files
       #
       # USAGE:

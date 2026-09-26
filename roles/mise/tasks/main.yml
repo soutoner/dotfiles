@@ -1,0 +1,74 @@
+---
+- name: Check if mise is already installed
+  command: which mise
+  register: mise_which
+  failed_when: false
+  changed_when: false
+
+- name: (macOS) Install mise via Homebrew
+  homebrew:
+    name: mise
+    state: present
+  when:
+    - ansible_facts['os_family'] == "Darwin"
+    - mise_which.rc != 0
+
+- name: (Ubuntu) Download mise install script
+  get_url:
+    url: "{{ mise_installer_url }}"
+    dest: "/tmp/mise-install.sh"
+    mode: '0755'
+  when:
+    - ansible_facts['os_family'] == "Debian"
+    - mise_which.rc != 0
+
+- name: (Ubuntu) Install mise
+  shell: bash /tmp/mise-install.sh
+  args:
+    executable: /bin/bash
+  environment:
+    HOME: "{{ home_dir }}"
+  become_user: "{{ user }}"
+  when:
+    - ansible_facts['os_family'] == "Debian"
+    - mise_which.rc != 0
+
+- name: (Ubuntu) Clean up mise installer
+  file:
+    path: "/tmp/mise-install.sh"
+    state: absent
+
+# Resolve binary path — Homebrew puts it on PATH; Ubuntu install script uses ~/.local/bin
+- name: Locate mise binary
+  shell: which mise || echo {{ home_dir }}/.local/bin/mise
+  register: mise_bin
+  changed_when: false
+  environment:
+    PATH: "{{ home_dir }}/.local/bin:{{ ansible_env.PATH }}"
+
+- name: Check if Node.js LTS is already installed via mise
+  shell: "{{ mise_bin.stdout }} ls --global 2>/dev/null | grep -q '^node' && echo yes || echo no"
+  register: mise_node_check
+  changed_when: false
+  failed_when: false
+  become_user: "{{ user }}"
+  environment:
+    HOME: "{{ home_dir }}"
+
+- name: Install Node.js LTS via mise
+  command: "{{ mise_bin.stdout }} use --global node@lts"
+  become_user: "{{ user }}"
+  environment:
+    HOME: "{{ home_dir }}"
+  when: mise_node_check.stdout == 'no'
+
+- name: Verify mise installation
+  command: "{{ mise_bin.stdout }} --version"
+  register: mise_version
+  changed_when: false
+  failed_when: false
+
+- name: Display mise version
+  debug:
+    msg: "mise installed: {{ mise_version.stdout }}"
+  when: mise_version.rc == 0

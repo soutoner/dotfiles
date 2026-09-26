@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# envlink — centralised .env management with project symlinks
+#
+# Central store: $ENVLINK_DIR (default: ~/projects/envs)
+# Each project gets: <project-dir>/.env -> $ENVLINK_DIR/<name>.env
+#
+# Usage:
+#   envlink add [name] [dir]    create central file + symlink (dir defaults to cwd)
+#   envlink remove [name] [dir] remove symlink, keep central file
+#   envlink edit [name]         open central file in $EDITOR (name defaults to cwd basename)
+#   envlink ls                  list all managed envs
+
+set -euo pipefail
+
+ENVS_DIR="${ENVLINK_DIR:-$HOME/projects/envs}"
+
+die()  { echo "envlink: $*" >&2; exit 1; }
+info() { echo "  $*"; }
+
+_central() { echo "$ENVS_DIR/${1}.env"; }
+
+_name_from() {
+  # Use the provided argument, or fall back to basename of cwd
+  echo "${1:-$(basename "$(pwd)")}"
+}
+
+cmd_add() {
+  local name dir central link
+  name="$(_name_from "${1:-}")"
+  dir="$(cd "${2:-$(pwd)}" && pwd)"
+  central="$(_central "$name")"
+  link="$dir/.env"
+
+  mkdir -p "$ENVS_DIR"
+
+  if [[ ! -f "$central" ]]; then
+    touch "$central"
+    info "created  $central"
+  else
+    info "exists   $central"
+  fi
+
+  if [[ -L "$link" ]] && [[ "$(readlink "$link")" == "$central" ]]; then
+    info "already  $link -> $central"
+    return 0
+  fi
+
+  if [[ -e "$link" ]] && [[ ! -L "$link" ]]; then
+    die "$link exists and is not a symlink. Move it first:
+    mv \"$link\" \"$central\" && envlink add \"$name\" \"$dir\""
+  fi
+
+  ln -sf "$central" "$link"
+  info "linked   $link -> $central"
+}
+
+cmd_remove() {
+  local name dir link
+  name="$(_name_from "${1:-}")"
+  dir="$(cd "${2:-$(pwd)}" && pwd)"
+  link="$dir/.env"
+
+  [[ -L "$link" ]] || die "no symlink at $link"
+  rm "$link"
+  info "removed  $link  (central file kept at $(_central "$name"))"
+}
+
+cmd_edit() {
+  local name central
+  name="$(_name_from "${1:-}")"
+  central="$(_central "$name")"
+  [[ -f "$central" ]] || die "'$name' not found. Run: envlink add $name"
+  "${EDITOR:-vim}" "$central"
+}
+
+cmd_ls() {
+  if [[ ! -d "$ENVS_DIR" ]]; then
+    echo "(no envs yet — run: envlink add <name>)"
+    return 0
+  fi
+
+  local found=0
+  for f in "$ENVS_DIR"/*.env; do
+    [[ -e "$f" ]] || continue
+    echo "  $(basename "$f" .env)"
+    found=1
+  done
+
+  [[ $found -eq 1 ]] || echo "(no envs yet — run: envlink add <name>)"
+}
+
+case "${1:-}" in
+  add)          shift; cmd_add    "$@" ;;
+  remove|rm)    shift; cmd_remove "$@" ;;
+  edit)         shift; cmd_edit   "$@" ;;
+  ls|list)      cmd_ls ;;
+  ""|help|-h|--help)
+    cat <<'EOF'
+Usage: envlink <command> [args]
+
+  add [name] [dir]     create central .env + symlink from dir (default: cwd)
+                       name defaults to basename of cwd
+  remove [name] [dir]  remove the symlink, keep the central file
+  edit [name]          open the central .env in $EDITOR
+  ls                   list all managed envs
+
+  ENVLINK_DIR          override central store (default: ~/projects/envs)
+
+Examples:
+  cd ~/projects/my-api && envlink add
+  envlink add my-api ~/projects/my-api
+  envlink edit my-api
+  envlink remove my-api ~/projects/my-api
+EOF
+    ;;
+  *) die "unknown command: '$1' — run 'envlink help'" ;;
+esac

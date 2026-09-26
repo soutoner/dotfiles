@@ -58,11 +58,12 @@
     msg: >
       ~/.claude does not exist. Skipping 'rtk init -g' hook configuration.
       Re-run the rtk role after Claude Code has been initialised at least once.
+    verbosity: 1
   when: not rtk_claude_dir.stat.exists
 
 - name: Check if RTK hook is already registered in settings.json
   shell: >
-    grep -q 'rtk' {{ home_dir }}/.claude/settings.json 2>/dev/null && echo yes || echo no
+    grep -q '"hooks"' {{ home_dir }}/.claude/settings.json 2>/dev/null && echo yes || echo no
   register: rtk_hook_check
   changed_when: false
   failed_when: false
@@ -98,6 +99,7 @@
     msg: >
       ~/.config/opencode does not exist. Skipping 'rtk init -g --opencode' plugin installation.
       Re-run the rtk role after OpenCode has been initialised at least once.
+    verbosity: 1
   when: not rtk_opencode_dir.stat.exists
 
 - name: Check if RTK OpenCode plugin is already installed

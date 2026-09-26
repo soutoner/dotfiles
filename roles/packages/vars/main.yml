@@ -6,6 +6,9 @@ packages_ubuntu:
   - vim
   - wget
   - curl
+  - bat
+  - eza
+  - jq
 
 packages_macos:
   - git
@@ -14,4 +17,6 @@ packages_macos:
   - vim
   - wget
   - curl
-  - fzf
+  - bat
+  - eza
+  - jq

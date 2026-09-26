@@ -42,7 +42,12 @@ if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
   tmux attach-session -t main || tmux new-session -s main
 fi
 
+# Activate mise (universal version manager — node, python, ruby, go, etc.)
+if command -v mise &>/dev/null; then
+  eval "$(mise activate zsh)"
+fi
+
 # Source local customizations (for tool-managed configurations)
-# Tools like nvm, sdkman, etc. should add their configuration to ~/.zshrc.local
+# Tools like sdkman, etc. should add their configuration to ~/.zshrc.local
 # NOTE: ~/.zshrc.local is created and managed by Ansible (not chezmoi)
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
